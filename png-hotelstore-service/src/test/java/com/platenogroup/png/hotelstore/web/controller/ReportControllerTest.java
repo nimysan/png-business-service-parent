@@ -19,7 +19,7 @@ public class ReportControllerTest {
 
 	@Test
 	public void test() {
-		webTestClient.get().uri("/version").exchange().expectStatus().isOk();
+		webTestClient.get().uri("/version").exchange().expectStatus().isOk().expectBody(String.class).isEqualTo("v1");
 	}
 
 }
