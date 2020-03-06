@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
 import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
 import com.vluee.png.shrfacade.domain.service.ShrService;
+import com.vluee.png.shrfacade.domain.service.VcodeService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class SalaryServiceImpl implements SalaryService {
+public class SalaryQueryServiceImpl implements SalaryQueryService {
 
 	@Autowired
 	private VcodeService vcodeService;
@@ -24,8 +25,8 @@ public class SalaryServiceImpl implements SalaryService {
 	private PngDataCenterService ssoService;
 
 	@Override
-	public EmployeeMonthSalary getSalary(String mobile, String vcode) throws Exception {
-		validateVcode(vcode);
+	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String vcode) throws Exception {
+		vcodeService.validate(sessionIdentifier, vcode);
 		String employeeNumber = ssoService.getEmployeeNumberByMobile(mobile);
 		if (isRealEmployeeNumber(employeeNumber)) {
 			throw new PngBusinessException();
