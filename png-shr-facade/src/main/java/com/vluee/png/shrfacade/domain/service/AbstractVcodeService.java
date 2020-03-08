@@ -13,6 +13,9 @@ import com.vluee.png.shrfacade.domain.model.SmsChannelResponse;
 import com.vluee.png.shrfacade.domain.model.VcodeRequest;
 import com.vluee.png.shrfacade.domain.model.VcodeRequestRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class AbstractVcodeService implements VcodeService {
 
 	@Autowired
@@ -44,6 +47,7 @@ public abstract class AbstractVcodeService implements VcodeService {
 	public String sendCode(String sessionIdentifier, String mobile) {
 		validateRequest(sessionIdentifier, mobile);
 		String vcode = nextCode();
+		log.info("#### vocde {}", nextCode());
 		SmsChannelResponse smsResponse = sendBySmsProvier(mobile, vcode);// TODO 如何存儲？
 		vcodeRepository.store(new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
 		return vcode;

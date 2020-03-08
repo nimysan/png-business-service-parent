@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-ServingWebContentApplication<png-shr-facade>",
+            "request": "launch",
+            "mainClass": "com.vluee.png.shrfacade.ServingWebContentApplication",
+            "projectName": "png-shr-facade"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-SendSms<png-shr-facade>",
+            "request": "launch",
+            "mainClass": "com.vluee.png.shrfacade.infrastructure.sms.SendSms",
+            "projectName": "png-shr-facade"
+        }
+    ]
+}

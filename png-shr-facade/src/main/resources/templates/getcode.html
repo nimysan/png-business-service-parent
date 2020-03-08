@@ -5,51 +5,32 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+	<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+	<script src="/js/png.js"></script>
+	<style src="css/png.css" type="text/css"></style>
     <style type="text/css">
 	</style>
 	<script>
-		function isPoneAvailable(mobile) {
-            var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
-            if (!myreg.test(mobile)) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-	
-		function getSmsCode(){
-			var mobile = $("#mobileInput").val();
-			if(!isPoneAvailable(mobile)){
-				alert("手机号码格式有误，请重新输入");
-				return;
-			}
-			$.get("/vcode?mobile="+$("#mobileInput").val(), function(data){
-				if(data.code == 'PNG-00000'){
-					alert("发送验证码成功");
-					$("#triggerSmsCodeButton").disable();
-				}
-			});
-		}
-		
-		$(document).ready(function(){
-			$("#triggerSmsCodeButton").click(getSmsCode);
-		});
 	</script>
 </head>
 <body>
+	<p th:text="${message}">
     <table>
     	<tr>
-    		<td>请输入手机号</td>
-    		<td><input type="text" id="mobileInput"></input></td>
-    	</tr>
-    	<tr>
-    		<td>请输入短信验证码</td>
-    		<td><input type="text"></input><button id="triggerSmsCodeButton">获取验证码</button></td>
+    		<td>请输入手机b号</td>
+    		<td><input type="text" id="mobileInput" value="13412341234"></input></td>
     	</tr>
     	<tr>
     		<td>请输入图片的数字</td>
-    		<td><input type="text"></input><img src="/robotCheckImage"></td>
+    		<td><input id="robotCheckCodeInput" type="text"></input><img src="/robotCheckImage"></td>
+    	</tr>
+    	<tr>
+    		<td>请输入短信验证码</td>
+    		<td><input type="text" id="vcodeInput"></input><button id="triggerSmsCodeButton">获取验证码</button></td>
+    	</tr>
+    	<tr>
+    		<td></td>
+    		<td><button id="getSalaryButton">查看工资条</button></td>
     	</tr>
     </table>   	
 </body>
