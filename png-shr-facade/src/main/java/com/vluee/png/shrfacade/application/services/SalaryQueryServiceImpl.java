@@ -1,11 +1,11 @@
 package com.vluee.png.shrfacade.application.services;
 
 import static com.vluee.png.shrfacade.application.exception.PngBusinessException.EC_NOT_PNG_EMPLOYEE;
-import static com.vluee.png.shrfacade.application.exception.PngExceptionUtil.throwExceptionWithCode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vluee.png.shrfacade.application.exception.PngExceptionUtil;
 import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
 import com.vluee.png.shrfacade.domain.model.HrUser;
 import com.vluee.png.shrfacade.domain.service.HrService;
@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class SalaryQueryServiceImpl implements SalaryQueryService {
+
+	@Autowired
+	private PngExceptionUtil exceptionHandler;
 
 	public SalaryQueryServiceImpl() {
 		log.warn("---iamhere---");
@@ -32,7 +35,7 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 
 		HrUser hrUser = shrService.getUserByMobile(mobile);
 		if (hrUser == null) {
-			throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
+			exceptionHandler.throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
 		}
 		vcodeService.validateVcode(sessionIdentifier, mobile, vcode);
 		return shrService.fetchSalary(hrUser.getUserId());
@@ -44,7 +47,7 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 		HrUser hrUser = shrService.getUserByMobile(mobile);
 
 		if (hrUser == null) {
-			throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
+			exceptionHandler.throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
 		}
 
 		String vcode = vcodeService.sendCode(sessionIdentifier, mobile);

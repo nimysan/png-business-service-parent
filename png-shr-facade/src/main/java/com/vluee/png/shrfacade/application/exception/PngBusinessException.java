@@ -22,11 +22,16 @@ public class PngBusinessException extends RuntimeException {
 	}
 
 	public PngBusinessException(String errorCode) {
-		this(errorCode, PngExceptionUtil.getMessageByCode(errorCode));
+		this(errorCode, "Error[" + errorCode + "]");
 	}
 
 	public PngBusinessException(String errorCode, String message, Throwable cause) {
 		super(message, cause);
 		this.errorCode = errorCode;
 	}
+
+	public String getErrorCode() {
+		return errorCode;
+	}
+
 }

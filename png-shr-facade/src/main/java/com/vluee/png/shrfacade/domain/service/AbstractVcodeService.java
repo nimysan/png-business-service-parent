@@ -1,12 +1,10 @@
 package com.vluee.png.shrfacade.domain.service;
 
 import static com.vluee.png.shrfacade.application.exception.PngBusinessException.EC_ONLY_ONE_VCODE_WITHIN_TIME;
-import static com.vluee.png.shrfacade.application.exception.PngExceptionUtil.throwExceptionWithCode;
 
 import java.util.Date;
 import java.util.Random;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
@@ -19,6 +17,9 @@ public abstract class AbstractVcodeService implements VcodeService {
 
 	@Autowired
 	private VcodeRequestRepository vcodeRepository;
+
+	@Autowired
+	private PngExceptionUtil exceptionHandler;
 
 	private String nextCode() {
 		int n = 6;
@@ -77,6 +78,10 @@ public abstract class AbstractVcodeService implements VcodeService {
 				throwExceptionWithCode(PngBusinessException.EC_VCODE_MOBILE_NOT_MATCH);
 			}
 		}
+	}
+
+	private void throwExceptionWithCode(String errorCode) {
+		exceptionHandler.throwExceptionWithCode(errorCode);
 	}
 
 	private boolean isVcodeExpired(VcodeRequest savedVcode) {

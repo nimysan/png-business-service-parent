@@ -1,6 +1,7 @@
 package com.vluee.png.shrfacade.domain.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -10,9 +11,11 @@ import lombok.Getter;
 public class SalaryItem {
 
 	@Getter
+	@Setter
 	private String name;
 
 	@Getter
-	private String value;
-	
+	@Setter
+	private String pay;
+
 }
