@@ -47,12 +47,12 @@ class AbstractVcodeServiceTest {
 	}
 
 	@Test
-	@DisplayName("验证10分钟内不再发送验证码")
+	@DisplayName("验证-x分钟内不允许再次发送验证码")
 	void verfiyValidateRequestInTimes() {
 		String sessionIdentifier = "test";
 		String mobile = "13512341234";
-		VcodeRequest before10secondsRequest = new VcodeRequest(sessionIdentifier, new Date().getTime() - 1000 * 10,
-				"1234", mobile);
+		VcodeRequest before10secondsRequest = new VcodeRequest(sessionIdentifier,
+				new Date().getTime() - VcodeService.VCODE_REQUEST_DURATION + 1000, "1234", mobile);
 		when(vcodeRepository.get(sessionIdentifier)).thenReturn(before10secondsRequest);
 //		verify(vcodeRepository).getLatestRequest(sessionIdentidfier);
 		assertThrows(PngBusinessException.class, () -> {
@@ -61,12 +61,12 @@ class AbstractVcodeServiceTest {
 	}
 
 	@Test
-	@DisplayName("验证10分钟之后允许再次发送验证码")
+	@DisplayName("验证-x分钟之後允许再次发送验证码")
 	void verfiyValidateRequestOutTimes() {
 		String sessionIdentifier = "test";
 		String mobile = "13512341234";
 		VcodeRequest before10secondsRequest = new VcodeRequest(sessionIdentifier,
-				new Date().getTime() - (1000 * 60 * 10 + 1000), "1234", mobile);
+				new Date().getTime() - VcodeService.VCODE_REQUEST_DURATION - 1000, "1234", mobile);
 		when(vcodeRepository.get(sessionIdentifier)).thenReturn(before10secondsRequest);
 		vcodeService.sendCode(sessionIdentifier, mobile);
 	}

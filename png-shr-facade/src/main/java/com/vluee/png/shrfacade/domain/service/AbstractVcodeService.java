@@ -95,7 +95,7 @@ public abstract class AbstractVcodeService implements VcodeService {
 	}
 
 	private boolean isInTimeRange(long lastRequestTime) {
-		return (new Date().getTime() - lastRequestTime) <= VCODE_EXPIRED_DURATION;
+		return (new Date().getTime() - lastRequestTime) <= VCODE_REQUEST_DURATION;
 	}
 
 }

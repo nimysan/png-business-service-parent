@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
  */
 public interface VcodeService {
 
-	public static final long REQUEST_LIMITION = TimeUnit.MINUTES.toMillis(30);
+	//验证码请求限制时间（在给定分钟内不允许再次发送验证）
+	public static final long VCODE_REQUEST_DURATION = TimeUnit.MINUTES.toMillis(1);
 
 	// 验证码有效期
 	public static final long VCODE_EXPIRED_DURATION = TimeUnit.MINUTES.toMillis(10);
