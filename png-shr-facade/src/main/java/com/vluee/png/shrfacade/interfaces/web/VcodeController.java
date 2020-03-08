@@ -14,7 +14,9 @@ import com.vluee.png.shrfacade.domain.service.VcodeService;
 
 @RestController
 public class VcodeController {
-
+	
+   //TODO 需提供一个方法给到运维组同事根据手机号码获取验证码的功能
+	
 	@Autowired
 	private VcodeService vcodeService;
 

@@ -11,8 +11,16 @@ package com.vluee.png.shrfacade.domain.service;
  */
 public interface VcodeService {
 
+	/**
+	 * 
+	 * @param sessionIdentifier
+	 * @param mobile
+	 * @return
+	 */
 	public String sendCode(String sessionIdentifier, String mobile);
 
 	public boolean validate(String sessionIdentifier, String vcode);
+
+	public void validateRequest(String sessionIdentifier, String mobile);
 
 }

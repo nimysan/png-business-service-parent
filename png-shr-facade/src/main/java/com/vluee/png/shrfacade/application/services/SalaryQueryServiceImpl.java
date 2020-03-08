@@ -1,10 +1,8 @@
 package com.vluee.png.shrfacade.application.services;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vluee.png.shrfacade.application.exception.PngBusinessException;
 import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
 import com.vluee.png.shrfacade.domain.service.ShrService;
 import com.vluee.png.shrfacade.domain.service.VcodeService;
@@ -21,26 +19,31 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 	@Autowired
 	private ShrService shrService;
 
-	@Autowired
-	private PngDataCenterService ssoService;
+	@Override
+	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String vcode) {
+
+		shrService.validateUserByMobile(mobile);
+		
+		vcodeService.validate(sessionIdentifier, vcode);
+
+		return shrService.fetchSalary(mobile);
+	}
 
 	@Override
-	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String vcode) throws Exception {
-		vcodeService.validate(sessionIdentifier, vcode);
-		String employeeNumber = ssoService.getEmployeeNumberByMobile(mobile);
-		if (isRealEmployeeNumber(employeeNumber)) {
-			throw new PngBusinessException();
-		} else {
-			return shrService.fetchSalary(employeeNumber);
+	public String sendVcodeToUser(String sessionIdentifier, String mobile) {
+		
+		shrService.validateUserByMobile(mobile);
+		
+		vcodeService.validateRequest(sessionIdentifier, mobile);
+		
+		String vcode = vcodeService.sendCode(sessionIdentifier, mobile);
+
+		if (log.isInfoEnabled()) {
+			log.info("send vcode %s to mobile %s in session [%s]", vcode, mobile, sessionIdentifier);
 		}
+
+		return vcode;
 	}
 
-	private boolean isRealEmployeeNumber(String employeeNumber) {
-		return StringUtils.isNotBlank(employeeNumber);
-	}
-
-	private void validateVcode(String vcode) {
-		log.debug("Try to validate code as [%]", vcode);
-	}
 
 }
