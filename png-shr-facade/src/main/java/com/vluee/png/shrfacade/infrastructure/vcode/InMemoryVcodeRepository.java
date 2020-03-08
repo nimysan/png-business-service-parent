@@ -15,21 +15,14 @@ public class InMemoryVcodeRepository implements VcodeRequestRepository {
 	Cache<String, String> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
 
 	@Override
-	public String get(String sessionIdentifier) {
-		// TODO Auto-generated method stub
+	public VcodeRequest get(String sessionIdentifier) {
 		return null;
 	}
 
 	@Override
 	public void store(VcodeRequest request) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public VcodeRequest getLatestRequest(String sessionIdentifier) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

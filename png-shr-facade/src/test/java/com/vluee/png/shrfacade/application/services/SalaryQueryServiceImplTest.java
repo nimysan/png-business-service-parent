@@ -43,7 +43,7 @@ class SalaryQueryServiceImplTest {
 		when(shrService.fetchSalary(user.getUserId())).thenReturn(mock(EmployeeMonthSalary.class));
 		salaryQueryService.getSalary(sessionIdentifier, mobile, vcode);
 		verify(shrService, times(1)).getUserByMobile(mobile);
-		verify(vcodeService, times(1)).validate(sessionIdentifier, vcode);
+		verify(vcodeService, times(1)).validateVcode(sessionIdentifier, mobile, vcode);
 	}
 
 	@Test
@@ -53,13 +53,13 @@ class SalaryQueryServiceImplTest {
 		String vcode = "123456";
 		HrUser user = new HrUser("iamuser", mobile);
 		when(shrService.getUserByMobile(mobile)).thenReturn(user);
-		doThrow(PngBusinessException.class).when(vcodeService).validate(sessionIdentifier, vcode);
+		doThrow(PngBusinessException.class).when(vcodeService).validateVcode(sessionIdentifier, mobile, vcode);
 //		when(shrService.fetchSalary(user.getUserId())).thenReturn(mock(EmployeeMonthSalary.class));
 		assertThrows(PngBusinessException.class, () -> {
 			salaryQueryService.getSalary(sessionIdentifier, mobile, vcode);
 		});
 	}
-	
+
 	@Test
 	void vierfyGetSalaryWithInvalidMobileUser() {
 		String mobile = "1234";
@@ -80,7 +80,6 @@ class SalaryQueryServiceImplTest {
 		when(shrService.getUserByMobile(mobile)).thenReturn(new HrUser("iamuser", mobile));
 		assertThat(salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile)).isNotNull();
 		verify(shrService, times(1)).getUserByMobile(mobile);
-		verify(vcodeService, times(1)).validateRequest(sessionIdentifier, mobile);
 		verify(vcodeService).sendCode(sessionIdentifier, mobile);
 	}
 

@@ -5,11 +5,13 @@ import static com.vluee.png.shrfacade.application.exception.PngExceptionUtil.thr
 
 import java.util.Date;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
+import com.vluee.png.shrfacade.application.exception.PngExceptionUtil;
+import com.vluee.png.shrfacade.domain.model.SmsChannelResponse;
 import com.vluee.png.shrfacade.domain.model.VcodeRequest;
 import com.vluee.png.shrfacade.domain.model.VcodeRequestRepository;
 
@@ -35,37 +37,65 @@ public abstract class AbstractVcodeService implements VcodeService {
 	 * @param vcode
 	 * @return
 	 */
-	protected abstract String sendBySmsProvier(String mobile, String vcode);
+	protected abstract SmsChannelResponse sendBySmsProvier(String mobile, String vcode);
 
 	@Override
 	public String sendCode(String sessionIdentifier, String mobile) {
-		if (vcodeRepository.get(sessionIdentifier) != null) {
-			throw new PngBusinessException(PngBusinessException.EC_NOT_PNG_EMPLOYEE);
+		validateRequest(sessionIdentifier, mobile);
+		String vcode = nextCode();
+		SmsChannelResponse smsResponse = sendBySmsProvier(mobile, vcode);// TODO 如何存儲？
+		vcodeRepository.store(new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
+		return vcode;
+	}
+
+	@Override
+	// TODO 如何自动过期？
+	public void validateVcode(String sessionIdentifier, String mobile, String vcode) {
+
+		VcodeRequest savedVcode = vcodeRepository.get(sessionIdentifier);
+
+		if (savedVcode == null) {
+			throwExceptionWithCode(PngBusinessException.EC_VCODE_NOTEXIST);
+		}
+
+		if (isVcodeExpired(savedVcode)) {
+			throwExceptionWithCode(PngBusinessException.EC_VCODE_EXPIRED);
+		}
+
+		if (!savedVcode.getMobile().contentEquals(mobile)) {
+			throwExceptionWithCode(PngBusinessException.EC_VCODE_MOBILE_NOT_MATCH);
+		}
+
+		if (savedVcode.getVocde().contentEquals(vcode) && savedVcode.getMobile().contentEquals(mobile)) {
+			return;
 		} else {
-			String vcode = nextCode();
-			sendBySmsProvier(mobile, vcode);
-			vcodeRepository.store(new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
-			return vcode;
+			if (!savedVcode.getVocde().contentEquals(vcode)) {
+				throwExceptionWithCode(PngBusinessException.EC_VCODE_NOTEXIST);
+			}
+
+			if (!savedVcode.getMobile().contentEquals(mobile)) {
+				throwExceptionWithCode(PngBusinessException.EC_VCODE_MOBILE_NOT_MATCH);
+			}
 		}
 	}
 
-	@Override
-	public boolean validate(String sessionIdentifier, String vcode) {
-		String savedVcode = vcodeRepository.get(sessionIdentifier);
-		return savedVcode != null && savedVcode.contentEquals(vcode);
+	private boolean isVcodeExpired(VcodeRequest savedVcode) {
+		return (new Date().getTime() - savedVcode.getRequestTime()) > VCODE_EXPIRED_DURATION;
 	}
 
-	@Override
-	public void validateRequest(String sessionIdentifier, String mobile) {
-		VcodeRequest latestRequest = vcodeRepository.getLatestRequest(sessionIdentifier);
-		boolean isValidRequest = latestRequest == null || isInTimeRange(latestRequest.getRequestTime());
-		if (!isValidRequest) {
+	protected void validateRequest(String sessionIdentifier, String mobile) {
+		VcodeRequest latestRequest = vcodeRepository.get(sessionIdentifier);
+		if (latestRequest == null) {
+			return;
+		}
+		boolean isInTimeRange = isInTimeRange(latestRequest.getRequestTime());
+		if (isInTimeRange) {
 			throwExceptionWithCode(EC_ONLY_ONE_VCODE_WITHIN_TIME);
 		}
 	}
 
 	private boolean isInTimeRange(long lastRequestTime) {
-		return (new Date().getTime() - lastRequestTime) > TimeUnit.MINUTES.toMillis(30);
+		return (new Date().getTime() - lastRequestTime) <= VCODE_EXPIRED_DURATION;
 	}
 
 }

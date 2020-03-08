@@ -34,9 +34,7 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 		if (hrUser == null) {
 			throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
 		}
-
-		vcodeService.validate(sessionIdentifier, vcode);
-
+		vcodeService.validateVcode(sessionIdentifier, mobile, vcode);
 		return shrService.fetchSalary(hrUser.getUserId());
 	}
 
@@ -48,8 +46,6 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 		if (hrUser == null) {
 			throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
 		}
-
-		vcodeService.validateRequest(sessionIdentifier, mobile);
 
 		String vcode = vcodeService.sendCode(sessionIdentifier, mobile);
 
