@@ -1,10 +1,14 @@
 package com.vluee.png.shrfacade.application.services;
 
+import static com.vluee.png.shrfacade.application.exception.PngBusinessException.EC_NOT_PNG_EMPLOYEE;
+import static com.vluee.png.shrfacade.application.exception.PngExceptionUtil.throwExceptionWithCode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
-import com.vluee.png.shrfacade.domain.service.ShrService;
+import com.vluee.png.shrfacade.domain.model.HrUser;
+import com.vluee.png.shrfacade.domain.service.HrService;
 import com.vluee.png.shrfacade.domain.service.VcodeService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,29 +17,40 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SalaryQueryServiceImpl implements SalaryQueryService {
 
+	public SalaryQueryServiceImpl() {
+		log.warn("---iamhere---");
+	}
+
 	@Autowired
 	private VcodeService vcodeService;
 
 	@Autowired
-	private ShrService shrService;
+	private HrService shrService;
 
 	@Override
 	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String vcode) {
 
-		shrService.validateUserByMobile(mobile);
-		
+		HrUser hrUser = shrService.getUserByMobile(mobile);
+		if (hrUser == null) {
+			throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
+		}
+
 		vcodeService.validate(sessionIdentifier, vcode);
 
-		return shrService.fetchSalary(mobile);
+		return shrService.fetchSalary(hrUser.getUserId());
 	}
 
 	@Override
 	public String sendVcodeToUser(String sessionIdentifier, String mobile) {
-		
-		shrService.validateUserByMobile(mobile);
-		
+
+		HrUser hrUser = shrService.getUserByMobile(mobile);
+
+		if (hrUser == null) {
+			throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
+		}
+
 		vcodeService.validateRequest(sessionIdentifier, mobile);
-		
+
 		String vcode = vcodeService.sendCode(sessionIdentifier, mobile);
 
 		if (log.isInfoEnabled()) {
@@ -44,6 +59,5 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 
 		return vcode;
 	}
-
 
 }

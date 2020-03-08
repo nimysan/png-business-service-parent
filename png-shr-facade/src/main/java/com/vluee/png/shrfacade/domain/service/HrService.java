@@ -1,11 +1,12 @@
 package com.vluee.png.shrfacade.domain.service;
 
 import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.domain.model.HrUser;
 
-public interface ShrService {
+public interface HrService {
 
 	public EmployeeMonthSalary fetchSalary(String phone);
 
-	public void validateUserByMobile(String mobile);
+	public HrUser getUserByMobile(String mobile);
 
 }

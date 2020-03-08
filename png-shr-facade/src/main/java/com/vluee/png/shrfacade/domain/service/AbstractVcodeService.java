@@ -1,4 +1,4 @@
-package com.vluee.png.shrfacade.domain.service.impl;
+package com.vluee.png.shrfacade.domain.service;
 
 import static com.vluee.png.shrfacade.application.exception.PngBusinessException.EC_ONLY_ONE_VCODE_WITHIN_TIME;
 import static com.vluee.png.shrfacade.application.exception.PngExceptionUtil.throwExceptionWithCode;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
 import com.vluee.png.shrfacade.domain.model.VcodeRequest;
 import com.vluee.png.shrfacade.domain.model.VcodeRequestRepository;
-import com.vluee.png.shrfacade.domain.service.VcodeService;
 
 public abstract class AbstractVcodeService implements VcodeService {
 
@@ -30,7 +29,8 @@ public abstract class AbstractVcodeService implements VcodeService {
 	}
 
 	/**
-	 *  调用真实的短信渠道发送发送验证码
+	 * 调用真实的短信渠道发送发送验证码
+	 * 
 	 * @param mobile
 	 * @param vcode
 	 * @return
