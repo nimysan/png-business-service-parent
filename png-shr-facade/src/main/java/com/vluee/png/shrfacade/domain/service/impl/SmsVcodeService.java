@@ -1,5 +1,7 @@
 package com.vluee.png.shrfacade.domain.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.vluee.png.shrfacade.domain.model.SmsChannelResponse;
 import com.vluee.png.shrfacade.domain.service.AbstractVcodeService;
 
@@ -9,6 +11,7 @@ import com.vluee.png.shrfacade.domain.service.AbstractVcodeService;
  * @author SeanYe
  *
  */
+@Service
 public class SmsVcodeService extends AbstractVcodeService {
 
 	@Override

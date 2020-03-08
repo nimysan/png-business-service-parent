@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public class HrUser {
+	
 	@Getter
 	private String userId;
 

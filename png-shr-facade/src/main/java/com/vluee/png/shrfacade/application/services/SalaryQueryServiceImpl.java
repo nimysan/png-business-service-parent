@@ -49,9 +49,7 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 
 		String vcode = vcodeService.sendCode(sessionIdentifier, mobile);
 
-		if (log.isInfoEnabled()) {
-			log.info("send vcode %s to mobile %s in session [%s]", vcode, mobile, sessionIdentifier);
-		}
+		log.info("send vcode {} to mobile {} in session [{}]", vcode, mobile, sessionIdentifier);
 
 		return vcode;
 	}

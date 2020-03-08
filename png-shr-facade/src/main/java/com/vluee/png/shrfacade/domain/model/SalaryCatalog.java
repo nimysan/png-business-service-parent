@@ -15,9 +15,13 @@ public class SalaryCatalog {
 	@Getter
 	private String catalog;
 
+	@Getter
 	private List<SalaryItem> items;
 
 	public void addSalaryItem(SalaryItem salaryItem) {
+		if (items == null) {
+			items = new ArrayList<SalaryItem>(5);
+		}
 		this.items.add(salaryItem);
 	}
 

@@ -8,21 +8,22 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.vluee.png.shrfacade.domain.model.VcodeRequest;
 import com.vluee.png.shrfacade.domain.model.VcodeRequestRepository;
+import com.vluee.png.shrfacade.domain.service.VcodeService;
 
 @Service
 public class InMemoryVcodeRepository implements VcodeRequestRepository {
 
-	Cache<String, String> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
+	Cache<String, VcodeRequest> cache = CacheBuilder.newBuilder()
+			.expireAfterWrite(VcodeService.VCODE_EXPIRED_DURATION, TimeUnit.MILLISECONDS).build();
 
 	@Override
 	public VcodeRequest get(String sessionIdentifier) {
-		return null;
+		return cache.getIfPresent(sessionIdentifier);
 	}
 
 	@Override
 	public void store(VcodeRequest request) {
-		// TODO Auto-generated method stub
-
+		cache.put(request.getSessionIdentifier(), request);
 	}
 
 }

@@ -5,7 +5,7 @@ import com.vluee.png.shrfacade.domain.model.HrUser;
 
 public interface HrService {
 
-	public EmployeeMonthSalary fetchSalary(String phone);
+	public EmployeeMonthSalary fetchSalary(String userId);
 
 	public HrUser getUserByMobile(String mobile);
 
