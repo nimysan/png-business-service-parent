@@ -20,9 +20,15 @@ import com.vluee.png.shrfacade.domain.service.HrService;
 
 import lombok.extern.slf4j.Slf4j;
 
+
+/**
+ *   请不要在任何生产环境使用该类。
+ * @author SeanYe
+ *
+ */
 @Service
-@Profile("dev")
 @Slf4j
+@Profile("dev")
 public class HrServiceForTest implements HrService {
 
 	private Map<String, String> userMap;
@@ -55,7 +61,7 @@ public class HrServiceForTest implements HrService {
 	public HrUser getUserByMobile(String mobile) {
 		String userId = userMap.get(mobile);
 		if (StringUtils.isNotBlank(userId))
-			return new HrUser(userId, mobile);
+			return new HrUser(userId, mobile, userId + "-name");
 
 		return null;
 	}

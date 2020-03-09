@@ -38,7 +38,7 @@ class SalaryQueryServiceImplTest {
 		String mobile = "1234";
 		String sessionIdentifier = "123";
 		String vcode = "123456";
-		HrUser user = new HrUser("iamuser", mobile);
+		HrUser user = new HrUser("iamuser", mobile, "name");
 		when(shrService.getUserByMobile(mobile)).thenReturn(user);
 		when(shrService.fetchSalary(user.getUserId())).thenReturn(mock(EmployeeMonthSalary.class));
 		salaryQueryService.getSalary(sessionIdentifier, mobile, vcode);
@@ -51,7 +51,7 @@ class SalaryQueryServiceImplTest {
 		String mobile = "1234";
 		String sessionIdentifier = "123";
 		String vcode = "123456";
-		HrUser user = new HrUser("iamuser", mobile);
+		HrUser user = new HrUser("iamuser", mobile, "name");
 		when(shrService.getUserByMobile(mobile)).thenReturn(user);
 		doThrow(PngBusinessException.class).when(vcodeService).validateVcode(sessionIdentifier, mobile, vcode);
 //		when(shrService.fetchSalary(user.getUserId())).thenReturn(mock(EmployeeMonthSalary.class));
@@ -77,7 +77,7 @@ class SalaryQueryServiceImplTest {
 		String mobile = "1234";
 		String sessionIdentifier = "123";
 		when(vcodeService.sendCode(sessionIdentifier, mobile)).thenReturn("123456");
-		when(shrService.getUserByMobile(mobile)).thenReturn(new HrUser("iamuser", mobile));
+		when(shrService.getUserByMobile(mobile)).thenReturn(new HrUser("iamuser", mobile, "name"));
 		assertThat(salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile)).isNotNull();
 		verify(shrService, times(1)).getUserByMobile(mobile);
 		verify(vcodeService).sendCode(sessionIdentifier, mobile);

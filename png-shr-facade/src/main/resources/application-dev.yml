@@ -3,6 +3,10 @@ spring:
         cache: false
 
 png:
+    sso:
+        appid: shrgiven
+        appkey: shrgiven123
+        uri: http://10.100.113.69:8080/sso-inf/
     sms:
         tencent:
             appkey: 28ef64adf566c2af0dc207657395d8cb

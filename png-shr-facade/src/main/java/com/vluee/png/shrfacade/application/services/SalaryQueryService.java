@@ -10,12 +10,14 @@ public interface SalaryQueryService {
 	 * @param mobile
 	 */
 	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String vcode);
-	
+
 	/**
-	 *  1.  验证手机号码是否是一个合理的铂涛员工，如果是 则发送验证给到客户
-	 *  2.  验证码30分钟内有效
-	 *  3. 一个session的用于30分钟内再次发送验证码
-	 *  
+	 * 1. 验证手机号码是否是一个合理的铂涛员工，如果是 则发送验证给到客户
+	 * 
+	 * 2. 验证码10分钟内有效
+	 * 
+	 * 3. 一个session的用于1分钟内再次发送验证码
+	 * 
 	 * @param sessionIdentifier
 	 * @param mobile
 	 * @return

@@ -2,13 +2,17 @@ package com.vluee.png.shrfacade.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
+@Getter
+@Setter
 public class HrUser {
-	
-	@Getter
+
 	private String userId;
 
-	@Getter
 	private String mobile;
+
+	private String name;
+
 }
