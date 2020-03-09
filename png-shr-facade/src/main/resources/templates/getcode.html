@@ -26,15 +26,21 @@
     </div>
     <form>
         <div class="form-group">
-            <label for="exampleInputEmail1">请输入手机号</label>
-            <input type="text" id="mobileInput" value="13412341234" class="form-control input-sm">
+            <label for="mobileInput">请输入手机号</label>
+            <input type="text" id="mobileInput" value="13412341234" class="form-control">
         </div>
         <div class="form-group">
-            <label for="exampleInputPassword1">请输入手机短信验证码</label>
-            <input type="text" id="vcodeInput" class="form-control input-sm"></input>
-            <button id="triggerSmsCodeButton" class="btn btn-primary btn-xs">获取验证码</button>
+            <label for="vcodeInput">请输入手机短信验证码</label>
+            <div class="row">
+            	<div class="col-xs-8 col-sm-8 col-md-8 center-block">
+            		<input type="text" id="vcodeInput" class="form-control"></input>
+            	</div>
+            	<div class="col-xs-4 col-md-4 center-block">
+            		<button id="triggerSmsCodeButton" class="btn btn-primary">获取验证码</button>
+            	</div>
+            </div>
         </div>
-        <button id="getSalaryButton" class="btn btn-primary btn-xs">查看工资条</button>
+        <button id="getSalaryButton" class="btn btn-primary">查看工资条</button>
     </form>
     <div class="modal fade" id="robotCheckModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -46,8 +52,8 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">请输入图形中的数字</label>
-                            <input id="robotCheckCodeInput" type="text" class="form-control input-sm"></input><img id="robotCheckImage" src="/robotCheckImage"><a id="refreshImageCode" href="javascript:void(0);">看不清，刷新</a>
+                            <label for="robotCheckCodeInput">请输入图形中的数字</label>
+                            <input id="robotCheckCodeInput" type="text" class="form-control"></input><img id="robotCheckImage" src="/robotCheckImage"><a id="refreshImageCode" href="javascript:void(0);">看不清，刷新</a>
                         </div>
                     </form>
                 </div>
@@ -59,5 +65,4 @@
         </div><!-- /.modal -->
     </div>
 </body>
-
 </html>
