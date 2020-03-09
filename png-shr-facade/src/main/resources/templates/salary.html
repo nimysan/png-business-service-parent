@@ -1,32 +1,43 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>铂涛员工工资条</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <script src="/js/png.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    </style>
+    <link rel="stylesheet" href="/css/png.css" type="text/css">
+    </style>
     <style type="text/css">
-		tr {border:1px red solid;}
-		td {border:1px red solid;}
-	</style>
+    </style>
 </head>
+
 <body>
-    <table>
-    <tr>
-    	<td>
-    		<p th:text="${salary.year} + '年'+${salary.month}+'月工资条'" />
-    	</td>
-    </tr>
-	<tr th:each="catEntry,catStat:${salary.catalogs}">
-		<td>
-		<p th:text="${catEntry.catalog}"></p>
-					<table th:each="itemEntry,itemStat:${catEntry.items}">
-						<tr>
-							<td th:text="${itemEntry.name}"/>
-							<td th:text="${itemEntry.pay}"/>
-						</tr>
-						
-					</table>
-		<td>
-	</tr>
-    </table>
+    <div class="container container-fluented">
+        <p class="salary-title" th:text="${salary.year} + '年'+${salary.month}+'月工资条'" />
+        <div class="alert alert-warning" role="alert" th:text="'备注:' +${salary.remark}"></div>
+        <item th:each="catEntry,catStat:${salary.catalogs}">
+        <div class="panel panel-primary">
+            <div class="panel-heading" th:text="${catEntry.title}"></div>
+            <table class="table table-bordered">
+                <!--
+                <tr>
+                	<td style="width:70%;">项目</td>
+                	<td>金额</td>
+                </tr>
+                -->
+                <tr th:each="itemEntry,itemStat:${catEntry.items}">
+                	<td th:text="${itemEntry.name}" style="width:70%;" ></td>
+                	<td th:text="'￥' + ${itemEntry.value}"></td>
+                </tr>
+            </table>
+        	</div>
+        </item>
+    </div>
 </body>
+
 </html>

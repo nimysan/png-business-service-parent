@@ -37,13 +37,14 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 		if (hrUser == null) {
 			exceptionHandler.throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
 		}
+		log.info("validate vode with session id {} and mobile {} and vcode {}", sessionIdentifier, mobile, vcode);
 		vcodeService.validateVcode(sessionIdentifier, mobile, vcode);
 		return shrService.fetchSalary(hrUser.getUserId());
 	}
 
 	@Override
 	public String sendVcodeToUser(String sessionIdentifier, String mobile) {
-
+		log.info("Send vode with session id {} and mobile {}", sessionIdentifier, mobile);
 		HrUser hrUser = shrService.getUserByMobile(mobile);
 
 		if (hrUser == null) {

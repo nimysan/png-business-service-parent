@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vluee.png.shrfacade.application.exception.PngExceptionUtil;
-import com.vluee.png.shrfacade.domain.service.VcodeService;
+import com.vluee.png.shrfacade.application.services.SalaryQueryService;
 
 @RestController
 public class VcodeController {
 
 	@Autowired
-	private VcodeService vcodeService;
+	private SalaryQueryService salaryQueryService;
 
 	@Autowired
 	private PngExceptionUtil exceptionHandler;
@@ -28,7 +28,7 @@ public class VcodeController {
 			String attribute = (String) session.getAttribute(ImageValidateCodeGenerator.RANDOMCODEKEY);
 			if (StringUtils.isNotBlank(attribute) && robotCheckCode.contentEquals(attribute)) {
 				String sessionId = session.getId();
-				vcodeService.sendCode(sessionId, mobile);
+				salaryQueryService.sendVcodeToUser(sessionId, mobile);
 				return ResponseEntity.ok(BisResp.okEntity("验证码发送成功"));
 			} else {
 				throw new Exception("请重新检查您的图形验证码");

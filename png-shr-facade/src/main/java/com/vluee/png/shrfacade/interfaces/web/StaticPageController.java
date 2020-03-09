@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableMap;
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
 import com.vluee.png.shrfacade.application.services.SalaryQueryService;
 import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.interfaces.web.assembler.SalaryVoAssembler;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,13 +25,16 @@ public class StaticPageController {
 	@Autowired
 	private SalaryQueryService salaryQueryService;
 
+	@Autowired
+	private SalaryVoAssembler assembler;
+
 	@GetMapping("/salary")
 	public String greeting(HttpSession session, @RequestParam(name = "mobile", required = true) String mobile,
 			@RequestParam(name = "vcode", required = true) String vcode, Model model) {
 		try {
 			EmployeeMonthSalary salary = salaryQueryService.getSalary(session.getId(), mobile, vcode);
 			if (salary != null) {
-				model.addAttribute("salary", salary);
+				model.addAttribute("salary", assembler.assemble(salary));
 			}
 		} catch (PngBusinessException e) {
 			model.addAllAttributes(ImmutableMap.of("errorcode", e.getErrorCode(), "message", e.getMessage()));// TODO

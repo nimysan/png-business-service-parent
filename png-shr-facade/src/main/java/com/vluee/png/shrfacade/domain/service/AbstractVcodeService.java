@@ -47,7 +47,7 @@ public abstract class AbstractVcodeService implements VcodeService {
 	public String sendCode(String sessionIdentifier, String mobile) {
 		validateRequest(sessionIdentifier, mobile);
 		String vcode = nextCode();
-		log.info("#### vocde {}", nextCode());
+		log.info("#### vocde {}", vcode);
 		SmsChannelResponse smsResponse = sendBySmsProvier(mobile, vcode);// TODO 如何存儲？
 		vcodeRepository.store(new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
 		return vcode;

@@ -1,0 +1,15 @@
+body {
+	width: 80%;
+	margin: 0 auto;
+}
+
+.salary-catalog-title {
+	font-size: 18px;
+	font-family: bold;
+}
+
+.salary-title {
+	font-size: 24px;
+	font-family: bold;
+	text-align: center;
+}

@@ -1,37 +1,63 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>铂涛员工工资条</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
-	<script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
-	<script src="/js/png.js"></script>
-	<style src="css/png.css" type="text/css"></style>
+    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <script src="/js/png.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    </style>
+    <link rel="stylesheet" href="/css/png.css" type="text/css">
+    </style>
     <style type="text/css">
-	</style>
-	<script>
-	</script>
+    </style>
+    <script>
+    </script>
 </head>
+
 <body>
-	<p th:text="${message}">
-    <table>
-    	<tr>
-    		<td>请输入手机b号</td>
-    		<td><input type="text" id="mobileInput" value="13412341234"></input></td>
-    	</tr>
-    	<tr>
-    		<td>请输入图片的数字</td>
-    		<td><input id="robotCheckCodeInput" type="text"></input><img src="/robotCheckImage"></td>
-    	</tr>
-    	<tr>
-    		<td>请输入短信验证码</td>
-    		<td><input type="text" id="vcodeInput"></input><button id="triggerSmsCodeButton">获取验证码</button></td>
-    	</tr>
-    	<tr>
-    		<td></td>
-    		<td><button id="getSalaryButton">查看工资条</button></td>
-    	</tr>
-    </table>   	
+    <div class="jumbotron">
+        <h1>铂涛集团</h1>
+    </div>
+    <div class="alert alert-danger" th:if="${message}" th:text="${message}">
+    </div>
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">请输入手机号</label>
+            <input type="text" id="mobileInput" value="13412341234" class="form-control input-sm">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">请输入手机短信验证码</label>
+            <input type="text" id="vcodeInput" class="form-control input-sm"></input>
+            <button id="triggerSmsCodeButton" class="btn btn-primary btn-xs">获取验证码</button>
+        </div>
+        <button id="getSalaryButton" class="btn btn-primary btn-xs">查看工资条</button>
+    </form>
+    <div class="modal fade" id="robotCheckModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">铂涛集团</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">请输入图形中的数字</label>
+                            <input id="robotCheckCodeInput" type="text" class="form-control input-sm"></input><img id="robotCheckImage" src="/robotCheckImage"><a id="refreshImageCode" href="javascript:void(0);">看不清，刷新</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="robotCheckModelConfirm" type="button" class="btn btn-primary">确认并发送短信验证码</button> 
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 </body>
+
 </html>
