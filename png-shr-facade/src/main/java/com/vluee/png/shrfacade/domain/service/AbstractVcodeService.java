@@ -8,7 +8,7 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
-import com.vluee.png.shrfacade.application.exception.PngExceptionUtil;
+import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
 import com.vluee.png.shrfacade.domain.model.SmsChannelResponse;
 import com.vluee.png.shrfacade.domain.model.VcodeRequest;
 import com.vluee.png.shrfacade.domain.model.VcodeRequestRepository;
@@ -22,7 +22,14 @@ public abstract class AbstractVcodeService implements VcodeService {
 	private VcodeRequestRepository vcodeRepository;
 
 	@Autowired
-	private PngExceptionUtil exceptionHandler;
+	private PngExceptionHandler exceptionHandler;
+
+	/**
+	 * @param exceptionHandler the exceptionHandler to set
+	 */
+	public void setExceptionHandler(PngExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
+	}
 
 	private String nextCode() {
 		int n = 6;

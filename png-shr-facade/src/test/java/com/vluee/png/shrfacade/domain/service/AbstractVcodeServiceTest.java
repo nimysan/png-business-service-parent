@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Date;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
+import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
 import com.vluee.png.shrfacade.domain.model.SmsChannelResponse;
 import com.vluee.png.shrfacade.domain.model.VcodeRequest;
 import com.vluee.png.shrfacade.domain.model.VcodeRequestRepository;
@@ -24,16 +26,22 @@ class AbstractVcodeServiceTest {
 
 	@Mock
 	private VcodeRequestRepository vcodeRepository;
+	
+	
+
 
 	@InjectMocks
-	private VcodeService vcodeService = new AbstractVcodeService() {
-
+	private AbstractVcodeService vcodeService = new AbstractVcodeService() {
 		@Override
 		protected SmsChannelResponse sendBySmsProvier(String sessionId, String mobile, String vcode) {
 			return new SmsChannelResponse("Tencent", "traceid-xxx-xxx-xxx-xxx");
 		}
-
 	};
+	
+	@BeforeEach
+	public void setUp() {
+		vcodeService.setExceptionHandler(new PngExceptionHandler());
+	}
 
 	@Test
 	@DisplayName("验证用户第一次请求发送验证码")

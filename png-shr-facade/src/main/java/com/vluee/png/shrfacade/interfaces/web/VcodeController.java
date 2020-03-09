@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vluee.png.shrfacade.application.exception.PngExceptionUtil;
+import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
 import com.vluee.png.shrfacade.application.services.SalaryQueryService;
 
 @RestController
@@ -19,7 +19,7 @@ public class VcodeController {
 	private SalaryQueryService salaryQueryService;
 
 	@Autowired
-	private PngExceptionUtil exceptionHandler;
+	private PngExceptionHandler exceptionHandler;
 
 	@GetMapping("/vcode")
 	public ResponseEntity<BisResp> sendVcode(HttpSession session, @RequestParam String mobile,

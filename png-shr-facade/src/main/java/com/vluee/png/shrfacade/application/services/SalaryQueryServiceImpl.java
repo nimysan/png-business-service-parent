@@ -5,7 +5,7 @@ import static com.vluee.png.shrfacade.application.exception.PngBusinessException
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vluee.png.shrfacade.application.exception.PngExceptionUtil;
+import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
 import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
 import com.vluee.png.shrfacade.domain.model.HrUser;
 import com.vluee.png.shrfacade.domain.service.HrService;
@@ -18,10 +18,17 @@ import lombok.extern.slf4j.Slf4j;
 public class SalaryQueryServiceImpl implements SalaryQueryService {
 
 	@Autowired
-	private PngExceptionUtil exceptionHandler;
+	private PngExceptionHandler exceptionHandler;
 
 	public SalaryQueryServiceImpl() {
 		log.warn("---iamhere---");
+	}
+
+	/**
+	 * @param exceptionHandler the exceptionHandler to set
+	 */
+	public void setExceptionHandler(PngExceptionHandler exceptionHandler) {
+		this.exceptionHandler = exceptionHandler;
 	}
 
 	@Autowired

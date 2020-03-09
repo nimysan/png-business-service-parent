@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class PngExceptionUtil {
+public class PngExceptionHandler {
 
 	@Resource
 	private MessageSource messageSource;
@@ -28,7 +28,7 @@ public class PngExceptionUtil {
 			return this.messageSource.getMessage(key, args, this.locale);
 		} catch (Exception e) {
 			log.error("Failed to i18n", e);
-			return null;
+			return key;
 		}
 	}
 

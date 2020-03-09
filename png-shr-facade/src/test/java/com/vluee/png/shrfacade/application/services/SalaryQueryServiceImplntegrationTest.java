@@ -18,7 +18,7 @@ import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
-@ActiveProfiles("dev")
+@ActiveProfiles("integration-test")
 @Slf4j
 class SalaryQueryServiceImplntegrationTest {
 

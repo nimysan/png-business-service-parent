@@ -1,4 +1,4 @@
-package com.vluee.png.shrfacade.infrastructure.shr;
+package com.vluee.png.shrfacade.application.services;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -20,32 +20,31 @@ import com.vluee.png.shrfacade.domain.service.HrService;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 /**
- *   请不要在任何生产环境使用该类。
+ * 请不要在任何生产环境使用该类。
+ * 
  * @author SeanYe
  *
  */
 @Service
 @Slf4j
-@Profile("dev")
-public class HrServiceForTest implements HrService {
+@Profile("integration-test")
+public class HrServiceStub implements HrService {
 
 	private Map<String, String> userMap;
 	private Map<String, EmployeeMonthSalary> salaryMap;
 
 	@PostConstruct
 	void data() {
-		log.info("-----初始化测试数据--------");
-		userMap = ImmutableMap.of("15999651042", "user111", "13412341235", "user222");
-		salaryMap = ImmutableMap.of("user111", createNewOne());
+		log.debug("-----初始化测试数据--------");
+		userMap = ImmutableMap.of("13412341234", "user111", "13412341235", "user222", "15999651042", "user333");
+		salaryMap = ImmutableMap.of("user111", createNewOne(), "user333", createNewOne());
 	}
 
 	private EmployeeMonthSalary createNewOne() {
 		try {
-			return EmployeeMonthSalaryAssembler.assembleFromShrResponse(Joiner.on("")
-					.join(IOUtils.readLines(HrServiceForTest.class.getClassLoader().getResourceAsStream("sample.json"),
-							Charset.forName("utf8"))));
+			return EmployeeMonthSalaryAssembler.assembleFromShrResponse(Joiner.on("").join(IOUtils.readLines(
+					HrServiceStub.class.getClassLoader().getResourceAsStream("sample.json"), Charset.forName("utf8"))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

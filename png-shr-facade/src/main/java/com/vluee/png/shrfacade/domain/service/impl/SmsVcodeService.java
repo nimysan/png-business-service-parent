@@ -2,6 +2,7 @@ package com.vluee.png.shrfacade.domain.service.impl;
 
 import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.vluee.png.shrfacade.domain.model.SmsChannelResponse;
@@ -15,6 +16,7 @@ import com.vluee.png.shrfacade.domain.service.SmsChannelService;
  *
  */
 @Service
+@Profile("!integration-test")
 public class SmsVcodeService extends AbstractVcodeService {
 
 	@Autowired
