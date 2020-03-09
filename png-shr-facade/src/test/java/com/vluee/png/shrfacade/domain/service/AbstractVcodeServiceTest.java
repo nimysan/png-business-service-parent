@@ -29,7 +29,7 @@ class AbstractVcodeServiceTest {
 	private VcodeService vcodeService = new AbstractVcodeService() {
 
 		@Override
-		protected SmsChannelResponse sendBySmsProvier(String mobile, String vcode) {
+		protected SmsChannelResponse sendBySmsProvier(String sessionId, String mobile, String vcode) {
 			return new SmsChannelResponse("Tencent", "traceid-xxx-xxx-xxx-xxx");
 		}
 

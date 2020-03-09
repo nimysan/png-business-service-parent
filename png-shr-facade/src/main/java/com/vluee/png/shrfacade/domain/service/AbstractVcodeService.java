@@ -41,20 +41,18 @@ public abstract class AbstractVcodeService implements VcodeService {
 	 * @param vcode
 	 * @return
 	 */
-	protected abstract SmsChannelResponse sendBySmsProvier(String mobile, String vcode);
+	protected abstract SmsChannelResponse sendBySmsProvier(String sessionId, String mobile, String vcode);
 
 	@Override
 	public String sendCode(String sessionIdentifier, String mobile) {
 		validateRequest(sessionIdentifier, mobile);
 		String vcode = nextCode();
-		log.info("#### vocde {}", vcode);
-		SmsChannelResponse smsResponse = sendBySmsProvier(mobile, vcode);// TODO 如何存儲？
+		SmsChannelResponse smsResponse = sendBySmsProvier(sessionIdentifier, mobile, vcode);// TODO 如何存儲？
 		vcodeRepository.store(new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
 		return vcode;
 	}
 
 	@Override
-	// TODO 如何自动过期？
 	public void validateVcode(String sessionIdentifier, String mobile, String vcode) {
 
 		VcodeRequest savedVcode = vcodeRepository.get(sessionIdentifier);

@@ -31,7 +31,7 @@ public class HrServiceForTest implements HrService {
 	@PostConstruct
 	void data() {
 		log.info("-----初始化测试数据--------");
-		userMap = ImmutableMap.of("13412341234", "user111", "13412341235", "user222");
+		userMap = ImmutableMap.of("15999651042", "user111", "13412341235", "user222");
 		salaryMap = ImmutableMap.of("user111", createNewOne());
 	}
 
