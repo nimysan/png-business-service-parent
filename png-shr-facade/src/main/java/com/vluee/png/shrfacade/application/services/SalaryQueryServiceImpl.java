@@ -38,9 +38,9 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 	private HrService shrService;
 
 	@Override
-	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String vcode) {
+	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String userName, String vcode) {
 
-		HrUser hrUser = shrService.getUserByMobile(mobile);
+		HrUser hrUser = shrService.getUserByMobile(mobile, userName);
 		if (hrUser == null) {
 			exceptionHandler.throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);
 		}
@@ -50,9 +50,9 @@ public class SalaryQueryServiceImpl implements SalaryQueryService {
 	}
 
 	@Override
-	public String sendVcodeToUser(String sessionIdentifier, String mobile) {
+	public String sendVcodeToUser(String sessionIdentifier, String mobile, String userName) {
 		log.info("Send vode with session id {} and mobile {}", sessionIdentifier, mobile);
-		HrUser hrUser = shrService.getUserByMobile(mobile);
+		HrUser hrUser = shrService.getUserByMobile(mobile, userName);
 
 		if (hrUser == null) {
 			exceptionHandler.throwExceptionWithCode(EC_NOT_PNG_EMPLOYEE);

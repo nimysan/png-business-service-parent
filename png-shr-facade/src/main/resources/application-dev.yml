@@ -1,11 +1,14 @@
 spring:
     thymeleaf:
         cache: false
+logging:  level:    com.vluee.png.shrfacade: debug        
 
 png:
+    shr:
+        host: http://10.100.114.135:8080/shr
     sso:
         appid: shrgiven
-        appkey: xxxxshrgiven123
+        appkey: shrgiven123
         uri: http://10.100.113.69:8080/sso-inf/
     sms:
         tencent:

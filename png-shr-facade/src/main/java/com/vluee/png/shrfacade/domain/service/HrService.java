@@ -7,6 +7,6 @@ public interface HrService {
 
 	public EmployeeMonthSalary fetchSalary(String userId);
 
-	public HrUser getUserByMobile(String mobile);
+	public HrUser getUserByMobile(String mobile, String employeeName);
 
 }

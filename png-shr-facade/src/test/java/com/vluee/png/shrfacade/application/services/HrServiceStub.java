@@ -57,10 +57,10 @@ public class HrServiceStub implements HrService {
 	}
 
 	@Override
-	public HrUser getUserByMobile(String mobile) {
+	public HrUser getUserByMobile(String mobile, String userName) {
 		String userId = userMap.get(mobile);
 		if (StringUtils.isNotBlank(userId))
-			return new HrUser(userId, mobile, userId + "-name");
+			return new HrUser(userId, mobile, userName);
 
 		return null;
 	}

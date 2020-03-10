@@ -23,12 +23,12 @@ public class VcodeController {
 
 	@GetMapping("/vcode")
 	public ResponseEntity<BisResp> sendVcode(HttpSession session, @RequestParam String mobile,
-			@RequestParam String robotCheckCode) {
+			@RequestParam String userName, @RequestParam String robotCheckCode) {
 		try {
 			String attribute = (String) session.getAttribute(ImageValidateCodeGenerator.RANDOMCODEKEY);
 			if (StringUtils.isNotBlank(attribute) && robotCheckCode.contentEquals(attribute)) {
 				String sessionId = session.getId();
-				salaryQueryService.sendVcodeToUser(sessionId, mobile);
+				salaryQueryService.sendVcodeToUser(sessionId, mobile, userName);
 				return ResponseEntity.ok(BisResp.okEntity("验证码发送成功"));
 			} else {
 				throw new Exception("请重新检查您的图形验证码");

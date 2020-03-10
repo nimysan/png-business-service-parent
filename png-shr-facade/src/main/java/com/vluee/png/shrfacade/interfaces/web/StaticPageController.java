@@ -30,9 +30,10 @@ public class StaticPageController {
 
 	@GetMapping("/salary")
 	public String greeting(HttpSession session, @RequestParam(name = "mobile", required = true) String mobile,
+			@RequestParam(name = "userName", required = true) String userName,
 			@RequestParam(name = "vcode", required = true) String vcode, Model model) {
 		try {
-			EmployeeMonthSalary salary = salaryQueryService.getSalary(session.getId(), mobile, vcode);
+			EmployeeMonthSalary salary = salaryQueryService.getSalary(session.getId(), mobile, userName, vcode);
 			if (salary != null) {
 				model.addAttribute("salary", assembler.assemble(salary));
 			}

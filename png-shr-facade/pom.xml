@@ -17,7 +17,7 @@
 			<artifactId>shr_sso_client</artifactId>
 			<version>20200305</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/externallib/shr_sso_client_20200305.jar</systemPath>
+			<systemPath>${project.basedir}/externallib/shr_sso_client85_lha.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -97,6 +97,11 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
 		</dependency>
 	</dependencies>
 

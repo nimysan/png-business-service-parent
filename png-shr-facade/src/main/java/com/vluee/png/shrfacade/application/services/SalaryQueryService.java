@@ -9,7 +9,7 @@ public interface SalaryQueryService {
 	 * 
 	 * @param mobile
 	 */
-	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String vcode);
+	public EmployeeMonthSalary getSalary(String sessionIdentifier, String mobile, String userName, String vcode);
 
 	/**
 	 * 1. 验证手机号码是否是一个合理的铂涛员工，如果是 则发送验证给到客户
@@ -22,6 +22,6 @@ public interface SalaryQueryService {
 	 * @param mobile
 	 * @return
 	 */
-	public String sendVcodeToUser(String sessionIdentifier, String mobile);
+	public String sendVcodeToUser(String sessionIdentifier, String userName, String mobile);
 
 }

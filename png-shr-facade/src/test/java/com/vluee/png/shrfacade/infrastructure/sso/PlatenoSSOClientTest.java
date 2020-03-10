@@ -5,11 +5,13 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import com.alibaba.fastjson.JSONObject;
+import com.vluee.png.shrfacade.PngConstants;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,13 +26,13 @@ class PlatenoSSOClientTest {
 		params.add("mobile", "123");
 		PlatenoSSOClient spy = Mockito.spy(ssoClient);
 		String url = "/expiredtest";
-		spy.sendApiRequest(url, params);
-		verify(spy, times(2)).sendApiRequestForString(url, params);
+		spy.sendApiRequest(url, params, HttpMethod.GET);
+		verify(spy, times(2)).sendApiRequestForString(url, params, HttpMethod.GET);
 		verify(spy, times(1)).fetchToken();
 
 		Mockito.clearInvocations(spy);
-		spy.sendApiRequest("/normal", params);
-		verify(spy, times(1)).sendApiRequestForString("/normal", params);
+		spy.sendApiRequest("/normal", params, HttpMethod.GET);
+		verify(spy, times(1)).sendApiRequestForString("/normal", params, HttpMethod.GET);
 	}
 
 	/**
@@ -51,9 +53,10 @@ class PlatenoSSOClientTest {
 		}
 
 		@Override
-		public ResponseEntity<String> sendApiRequestForString(String url, MultiValueMap<String, String> params) {
+		public ResponseEntity<String> sendApiRequestForString(String url, MultiValueMap<String, String> params,
+				HttpMethod httpMethod) {
 			if ("/expiredtest".contains(url)) {
-				PlatenoSSOResponse data = PlatenoSSOResponse.builder().statusCode(SSOConstants.EC_TOEKN_EXPIRED)
+				PlatenoSSOResponse data = PlatenoSSOResponse.builder().statusCode(PngConstants.EC_TOEKN_EXPIRED)
 						.message("token expired").data("").build();
 				log.info("test #{}#", data);
 				String jsonString = JSONObject.toJSONString(data);
@@ -64,7 +67,7 @@ class PlatenoSSOClientTest {
 				throw new RuntimeException("mock exception");
 			}
 			return ResponseEntity.ok(JSONObject.toJSONString(PlatenoSSOResponse.builder()
-					.statusCode(SSOConstants.RETURN_CODE_OK).message("forbat").data("").build()));
+					.statusCode(PngConstants.RETURN_CODE_OK).message("forbat").data("").build()));
 		}
 
 	}

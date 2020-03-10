@@ -30,8 +30,9 @@ class SalaryQueryServiceImplntegrationTest {
 	void vierfyGetSalary() {
 		String sessionIdentifier = UUID.randomUUID().toString();
 		String mobile = "13412341234";
-		String vcode = salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile);
-		EmployeeMonthSalary salary = salaryQueryService.getSalary(sessionIdentifier, mobile, vcode);
+		String userName = "haris";
+		String vcode = salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile, userName);
+		EmployeeMonthSalary salary = salaryQueryService.getSalary(sessionIdentifier, mobile, userName, vcode);
 		log.info("------{}---------", salary);
 		assertNotNull(salary);
 		assertThat(salary.getYear()).isNotBlank();
@@ -42,7 +43,8 @@ class SalaryQueryServiceImplntegrationTest {
 	void verifyGetVcode() {
 		String sessionIdentifier = UUID.randomUUID().toString();
 		String mobile = "13412341234";
-		assertThat(salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile)).isNotBlank();
+		String userName = "haris";
+		assertThat(salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile, userName)).isNotBlank();
 	}
 
 	@Test
@@ -50,7 +52,9 @@ class SalaryQueryServiceImplntegrationTest {
 	void verifyGetVcodeforNonPngUser() {
 		String sessionIdentifier = UUID.randomUUID().toString();
 		String mobile = "13412342222";
-		assertThrows(PngBusinessException.class, () -> salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile));
+		String userName = "haris";
+		assertThrows(PngBusinessException.class,
+				() -> salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile, userName));
 	}
 
 	@Test
@@ -58,9 +62,11 @@ class SalaryQueryServiceImplntegrationTest {
 	void verifyGetVcodeInDuration() {
 		String sessionIdentifier = UUID.randomUUID().toString();
 		String mobile = "13412341234";
-		assertThat(salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile)).isNotBlank();
+		String userName = "haris";
+		assertThat(salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile, userName)).isNotBlank();
 
-		assertThrows(PngBusinessException.class, () -> salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile),
+		assertThrows(PngBusinessException.class,
+				() -> salaryQueryService.sendVcodeToUser(sessionIdentifier, mobile, userName),
 				"can't get vcode in short duration");
 	}
 
