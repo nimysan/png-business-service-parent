@@ -28,17 +28,23 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-@Profile("integration-test,not-in-office")
 public class HrServiceStub implements HrService {
 
-	private Map<String, String> userMap;
+	private Map<String, HrUser> userMap;
 	private Map<String, EmployeeMonthSalary> salaryMap;
 
 	@PostConstruct
 	void data() {
 		log.debug("-----初始化测试数据--------");
-		userMap = ImmutableMap.of("13412341234", "user111", "13412341235", "user222", "15999651042", "user333");
+		createUserWithMobileAndName("13412340000", "foo");
+		createUserWithMobileAndName("13412340000", "bar");
+		createUserWithMobileAndName("13412340000", "nosalaydata");
 		salaryMap = ImmutableMap.of("user111", createNewOne(), "user333", createNewOne());
+	}
+
+	private void createUserWithMobileAndName(String mobile, String name) {
+		HrUser hr = new HrUser("u_" + mobile, mobile, name);
+		userMap.put(mobile, hr);
 	}
 
 	private EmployeeMonthSalary createNewOne() {
@@ -58,11 +64,7 @@ public class HrServiceStub implements HrService {
 
 	@Override
 	public HrUser getUserByMobile(String mobile, String userName) {
-		String userId = userMap.get(mobile);
-		if (StringUtils.isNotBlank(userId))
-			return new HrUser(userId, mobile, userName);
-
-		return null;
+		return userMap.get(mobile);
 	}
 
 }

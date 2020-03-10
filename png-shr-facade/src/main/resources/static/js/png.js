@@ -44,8 +44,9 @@
 		return false;
 	};
 
-	function refreshCodeImage() {
-		$("#robotCheckImage").attr("src", "/robotCheckImage");
+	function refreshCodeImageAndShow() {
+		$("#robotCheckImage").attr("src", "/robotCheckImage?" + Math.random());
+		console.log("--- hello here---");
 		return false;
 	}
 
@@ -66,20 +67,31 @@
 			alert("请输入图形验证码中的数字");
 			return false;
 		}
-		var triggerButton = $("#triggerSmsCodeButton");
-		if (smsRequestTimer) {
-			clearInterval(smsRequestTimer);
-		}
-		smsRequestTimer = setInterval("reduceWaitingTime()", 1000);
-		triggerButton.attr("disabled", true).text("可在(" + unitWaitingTimeInSecond + ")s后重新获取");
+
+
 		$('#robotCheckModal').modal('hide');
 		$.get("/vcode?mobile=" + $("#mobileInput").val() + "&robotCheckCode=" + robotCheckCode + "&userName=" + name, function(data) {
 			if (data.code == 'PNG-00000') {
+				setButtonClock();
 				alert("发送验证码成功");
 			} else {
+				cleanButtonClock();
 				alert(data.message);
+
 			}
 		});
+	}
+
+	function setButtonClock() {
+		var triggerButton = $("#triggerSmsCodeButton");
+		smsRequestTimer = setInterval("reduceWaitingTime()", 1000);
+		triggerButton.attr("disabled", true).text("可在(" + unitWaitingTimeInSecond + ")s后重新获取");
+	}
+
+	function cleanButtonClock() {
+		if (smsRequestTimer) {
+			clearInterval(smsRequestTimer);
+		}
 	}
 
 
@@ -97,7 +109,7 @@
 	$(document).ready(function() {
 		$("#triggerSmsCodeButton").click(openRobotCheckModal);
 		$("#getSalaryButton").click(getSalary);
-		$("#refreshImageCode").click(refreshCodeImage);
+		$("#refreshImageCode").click(refreshCodeImageAndShow);
 		$("#robotCheckModelConfirm").click(getSmsCode);
 	});
 

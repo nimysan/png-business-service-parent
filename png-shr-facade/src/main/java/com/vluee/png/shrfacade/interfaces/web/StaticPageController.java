@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.common.collect.ImmutableMap;
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
+import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
 import com.vluee.png.shrfacade.application.service.HrService;
 import com.vluee.png.shrfacade.domain.model.hr.EmployeeMonthSalary;
 import com.vluee.png.shrfacade.domain.model.hr.HrUser;
@@ -21,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class StaticPageController {
+
+	@Autowired
+	private PngExceptionHandler exceptionHandler;
 
 	@Autowired
 	private HrService hrService;
@@ -39,6 +43,9 @@ public class StaticPageController {
 			authenticatedRequest(session, mobile, vcode);
 			HrUser userByMobile = hrService.getUserByMobile(mobile, userName);
 			EmployeeMonthSalary salary = hrService.fetchSalary(userByMobile.getUserId());
+			if (salary == null) {
+				exceptionHandler.throwExceptionWithCode(PngBusinessException.EC_HR_NO_SALARY_DATA);
+			}
 			model.addAttribute("salary", assembler.assemble(salary));
 		} catch (PngBusinessException e) {
 			model.addAllAttributes(ImmutableMap.of("errorcode", e.getErrorCode(), "message", e.getMessage()));

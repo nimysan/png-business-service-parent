@@ -15,6 +15,8 @@ public class SalaryVo {
 	private String month;
 
 	private String remark;
+	
+	private String userName;
 
 	private List<SalaryCatalogVo> catalogs;
 

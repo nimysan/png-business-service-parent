@@ -2,6 +2,8 @@ package com.vluee.png.shrfacade.domain.service.impl;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Profile;
@@ -18,15 +20,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Profile({ "integration-test", "not-in-office", "!prod" })
 public class ShrServiceStub implements ShrService {
-	@Override
-	public EmployeeMonthSalary fetchSalary(String userId) {
-		if (userId.contentEquals("u_15999651042")) {
-			return createNewOne();
-		}
-		return null;
+
+	Map<String, EmployeeMonthSalary> testData = new HashMap<>();
+
+	public ShrServiceStub() {
+		log.info("初始化一個測試ShrServiceStub");
+		EmployeeMonthSalary sample = sample();
+		testData.put("u_13412340000", sample);
+
+		EmployeeMonthSalary sample1 = sample();
+		testData.put("u_13412340001", sample1);
+
 	}
 
-	private EmployeeMonthSalary createNewOne() {
+	@Override
+	public EmployeeMonthSalary fetchSalary(String userId) {
+		return testData.get(userId);
+	}
+
+	private EmployeeMonthSalary sample() {
 		try {
 			return EmployeeMonthSalaryAssembler.assembleFromShrResponse(Joiner.on("")
 					.join(IOUtils.readLines(ShrServiceStub.class.getClassLoader().getResourceAsStream("sample.json"),

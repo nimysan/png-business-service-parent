@@ -17,14 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 public class ImageValidateCodeGenerator {
 
 	public static final String RANDOMCODEKEY = "PNG-GETS-ROBOT-IMAGE-CHECK-CODE";// 放到session中的key
-	private String randString = "0123456789";// 随机产生只有数字的字符串 private String
+	// private String randString = "0123456789";// 随机产生只有数字的字符串 private String
 	// private String randString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生只有字母的字符串
-	// private String randString =
-	// "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生数字与字母组合的字符串
+	private String randString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";// 随机产生数字与字母组合的字符串
 	private int width = 95;// 图片宽
 	private int height = 25;// 图片高
-	private int lineSize = 40;// 干扰线数量
-	private int stringNum = 4;// 随机产生字符数量
+	private int lineSize = 120;// 干扰线数量
+	private int stringNum = 5;// 随机产生字符数量
 
 	private Random random = new Random();
 
@@ -62,12 +61,12 @@ public class ImageValidateCodeGenerator {
 		g.setColor(getRandColor(110, 133));// 字体颜色
 		// 绘制干扰线
 		for (int i = 0; i <= lineSize; i++) {
-			drowLine(g);
+			drawLine(g);
 		}
 		// 绘制随机字符
 		String randomString = "";
 		for (int i = 1; i <= stringNum; i++) {
-			randomString = drowString(g, randomString, i);
+			randomString = drawString(g, randomString, i);
 		}
 		// 将生成的随机字符串保存到session中
 		session.removeAttribute(RANDOMCODEKEY);
@@ -85,7 +84,7 @@ public class ImageValidateCodeGenerator {
 	/**
 	 * 绘制字符串
 	 */
-	private String drowString(Graphics g, String randomString, int i) {
+	private String drawString(Graphics g, String randomString, int i) {
 		g.setFont(getFont());
 		g.setColor(new Color(random.nextInt(101), random.nextInt(111), random.nextInt(121)));
 		String rand = String.valueOf(getRandomString(random.nextInt(randString.length())));
@@ -98,7 +97,7 @@ public class ImageValidateCodeGenerator {
 	/**
 	 * 绘制干扰线
 	 */
-	private void drowLine(Graphics g) {
+	private void drawLine(Graphics g) {
 		int x = random.nextInt(width);
 		int y = random.nextInt(height);
 		int xl = random.nextInt(13);

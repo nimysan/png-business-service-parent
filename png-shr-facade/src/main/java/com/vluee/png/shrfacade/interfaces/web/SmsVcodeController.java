@@ -14,7 +14,10 @@ import com.vluee.png.shrfacade.application.service.HrService;
 import com.vluee.png.shrfacade.domain.model.hr.HrUser;
 import com.vluee.png.shrfacade.domain.service.VcodeService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class SmsVcodeController {
 
 	@Autowired
@@ -31,7 +34,7 @@ public class SmsVcodeController {
 			@RequestParam String userName, @RequestParam String robotCheckCode) {
 		try {
 			HrUser hrUser = hrService.getUserByMobile(mobile, userName);
-			if(hrUser == null) {
+			if (hrUser == null) {
 				throw new Exception("找不到该手机号关联的铂涛员工数据或姓名与HR系统不匹配");
 			}
 			String attribute = (String) session.getAttribute(ImageValidateCodeGenerator.RANDOMCODEKEY);
@@ -43,6 +46,7 @@ public class SmsVcodeController {
 				throw new Exception("图形验证码错误，请重新输入");
 			}
 		} catch (Exception e) {
+			log.error("測試", e);
 			return ResponseEntity.ok(BisResp.fromException(exceptionHandler.output(e)));
 		}
 	}

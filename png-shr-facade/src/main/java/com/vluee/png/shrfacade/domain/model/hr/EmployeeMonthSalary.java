@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString
@@ -20,6 +21,10 @@ public class EmployeeMonthSalary {
 
 	@Getter
 	private String month;
+
+	@Getter
+	@Setter
+	private String userName;
 
 	private List<SalaryCatalog> catalogs;
 
