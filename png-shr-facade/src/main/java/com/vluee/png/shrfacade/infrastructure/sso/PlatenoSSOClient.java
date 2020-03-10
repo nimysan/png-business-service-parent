@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@Profile("!integration-test")
+@Profile("!not-in-office")
 public class PlatenoSSOClient {
 
 	@Value("${png.sso.appid}")

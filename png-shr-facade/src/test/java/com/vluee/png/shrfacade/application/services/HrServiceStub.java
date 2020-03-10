@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Service
 @Slf4j
-@Profile("integration-test")
+@Profile("integration-test,not-in-office")
 public class HrServiceStub implements HrService {
 
 	private Map<String, String> userMap;

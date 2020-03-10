@@ -58,6 +58,7 @@ public abstract class AbstractVcodeService implements VcodeService {
 		SmsChannelResponse smsResponse = sendBySmsProvier(sessionIdentifier, mobile, vcode);// TODO 储存结果
 		vcodeRequestRepository.store(sessionIdentifier,
 				new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
+		log.debug("send vode info: session {}, mobile {}, vcode {}", sessionIdentifier, mobile, vcode);
 		return vcode;
 	}
 

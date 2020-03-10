@@ -29,12 +29,17 @@
 			alert("手机号码格式有误，请重新输入");
 			return;
 		}
+		var name = $("#nameInput").val();
+		if (!name) {
+			alert("请输入姓名");
+			return;
+		}
 		var vcode = $("#vcodeInput").val();
 		if (!vcode) {
 			alert("请输入您收到的6位数的短信验证码");
 			return;
 		}
-		var salaryDetailUrl = "/salary?mobile=" + mobile + "&vcode=" + vcode;
+		var salaryDetailUrl = "/salary?mobile=" + mobile + "&vcode=" + vcode + "&userName=" + name;
 		window.location.href = salaryDetailUrl;
 		return false;
 	};
@@ -51,6 +56,11 @@
 			alert("手机号码格式有误，请重新输入");
 			return false;
 		}
+		var name = $("#nameInput").val();
+		if (!name) {
+			alert("请输入姓名");
+			return;
+		}
 		var robotCheckCode = $("#robotCheckCodeInput").val();
 		if (!robotCheckCode) {
 			alert("请输入图形验证码中的数字");
@@ -63,7 +73,7 @@
 		smsRequestTimer = setInterval("reduceWaitingTime()", 1000);
 		triggerButton.attr("disabled", true).text("可在(" + unitWaitingTimeInSecond + ")s后重新获取");
 		$('#robotCheckModal').modal('hide');
-		$.get("/vcode?mobile=" + $("#mobileInput").val() + "&robotCheckCode=" + robotCheckCode, function(data) {
+		$.get("/vcode?mobile=" + $("#mobileInput").val() + "&robotCheckCode=" + robotCheckCode + "&userName=" + name, function(data) {
 			if (data.code == 'PNG-00000') {
 				alert("发送验证码成功");
 			} else {

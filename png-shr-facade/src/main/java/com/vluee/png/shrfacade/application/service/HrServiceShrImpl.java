@@ -1,7 +1,6 @@
 package com.vluee.png.shrfacade.application.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.vluee.png.shrfacade.domain.model.hr.EmployeeMonthSalary;
@@ -16,7 +15,6 @@ import com.vluee.png.shrfacade.domain.service.ShrService;
  *
  */
 @Service
-@Profile("!integration-test")
 public class HrServiceShrImpl implements HrService {
 
 	@Autowired

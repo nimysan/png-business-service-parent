@@ -1,6 +1,7 @@
 package com.vluee.png.shrfacade.domain.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import com.vluee.png.shrfacade.PngConstants;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Profile("!not-in-office")
 public class ShrServiceImpl implements ShrService {
 	@Autowired
 	private PngShrClient pngShrClient;

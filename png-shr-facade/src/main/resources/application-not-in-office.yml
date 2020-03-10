@@ -1,0 +1,18 @@
+spring:
+    thymeleaf:
+        cache: false
+logging:  level:    com.vluee.png.shrfacade: debug        
+
+png:
+    shr:
+        host: http://10.100.114.135:8080/shr
+    sso:
+        appid: shrgiven
+        appkey: shrgiven123
+        uri: http://10.100.113.69:8080/sso-inf/
+    sms:
+        tencent:
+            appkey: xxxxx28ef64adf566c2af0dc207657395d8cb
+            appid: 1400328541
+            smsSign: "铂涛集团"
+            templateId: 550257
