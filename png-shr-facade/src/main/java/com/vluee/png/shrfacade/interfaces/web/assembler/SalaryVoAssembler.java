@@ -8,9 +8,9 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ImmutableMap;
-import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
-import com.vluee.png.shrfacade.domain.model.SalaryCatalog;
-import com.vluee.png.shrfacade.domain.model.SalaryItem;
+import com.vluee.png.shrfacade.domain.model.hr.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.domain.model.hr.SalaryCatalog;
+import com.vluee.png.shrfacade.domain.model.hr.SalaryItem;
 import com.vluee.png.shrfacade.interfaces.web.vo.SalaryCatalogVo;
 import com.vluee.png.shrfacade.interfaces.web.vo.SalaryItemVo;
 import com.vluee.png.shrfacade.interfaces.web.vo.SalaryVo;

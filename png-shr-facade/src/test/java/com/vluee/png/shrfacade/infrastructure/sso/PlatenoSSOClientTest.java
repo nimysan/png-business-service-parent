@@ -56,7 +56,7 @@ class PlatenoSSOClientTest {
 		public ResponseEntity<String> sendApiRequestForString(String url, MultiValueMap<String, String> params,
 				HttpMethod httpMethod) {
 			if ("/expiredtest".contains(url)) {
-				PlatenoSSOResponse data = PlatenoSSOResponse.builder().statusCode(PngConstants.EC_TOEKN_EXPIRED)
+				PlatenoSSOResponse data = PlatenoSSOResponse.builder().statusCode(PngConstants.SSO_EC_TOEKN_EXPIRED)
 						.message("token expired").data("").build();
 				log.info("test #{}#", data);
 				String jsonString = JSONObject.toJSONString(data);
@@ -67,7 +67,7 @@ class PlatenoSSOClientTest {
 				throw new RuntimeException("mock exception");
 			}
 			return ResponseEntity.ok(JSONObject.toJSONString(PlatenoSSOResponse.builder()
-					.statusCode(PngConstants.RETURN_CODE_OK).message("forbat").data("").build()));
+					.statusCode(PngConstants.SSO_RETURN_CODE_OK).message("forbat").data("").build()));
 		}
 
 	}

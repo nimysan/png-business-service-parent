@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vluee.png.shrfacade.PngConstants;
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
 import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
 import com.vluee.png.shrfacade.domain.model.SmsChannelResponse;
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractVcodeService implements VcodeService {
 
 	@Autowired
-	private VcodeRequestRepository vcodeRepository;
+	private VcodeRequestRepository vcodeRequestRepository;
 
 	@Autowired
 	private PngExceptionHandler exceptionHandler;
@@ -54,15 +55,15 @@ public abstract class AbstractVcodeService implements VcodeService {
 	public String sendCode(String sessionIdentifier, String mobile) {
 		validateRequest(sessionIdentifier, mobile);
 		String vcode = nextCode();
-		SmsChannelResponse smsResponse = sendBySmsProvier(sessionIdentifier, mobile, vcode);// TODO 如何存儲？
-		vcodeRepository.store(new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
+		SmsChannelResponse smsResponse = sendBySmsProvier(sessionIdentifier, mobile, vcode);// TODO 储存结果
+		vcodeRequestRepository.store(sessionIdentifier,
+				new VcodeRequest(sessionIdentifier, new Date().getTime(), vcode, mobile));
 		return vcode;
 	}
 
 	@Override
 	public void validateVcode(String sessionIdentifier, String mobile, String vcode) {
-
-		VcodeRequest savedVcode = vcodeRepository.get(sessionIdentifier);
+		VcodeRequest savedVcode = vcodeRequestRepository.get(sessionIdentifier);
 
 		if (savedVcode == null) {
 			throwExceptionWithCode(PngBusinessException.EC_VCODE_NOTEXIST);
@@ -94,11 +95,11 @@ public abstract class AbstractVcodeService implements VcodeService {
 	}
 
 	private boolean isVcodeExpired(VcodeRequest savedVcode) {
-		return (new Date().getTime() - savedVcode.getRequestTime()) > VCODE_EXPIRED_DURATION;
+		return (new Date().getTime() - savedVcode.getRequestTime()) > PngConstants.VCODE_LIVE_TIME;
 	}
 
 	protected void validateRequest(String sessionIdentifier, String mobile) {
-		VcodeRequest latestRequest = vcodeRepository.get(sessionIdentifier);
+		VcodeRequest latestRequest = vcodeRequestRepository.get(sessionIdentifier);
 		if (latestRequest == null) {
 			return;
 		}
@@ -109,7 +110,7 @@ public abstract class AbstractVcodeService implements VcodeService {
 	}
 
 	private boolean isInTimeRange(long lastRequestTime) {
-		return (new Date().getTime() - lastRequestTime) <= VCODE_REQUEST_DURATION;
+		return (new Date().getTime() - lastRequestTime) <= PngConstants.VCODE_REQUEST_LIVE_TIME;
 	}
 
 }

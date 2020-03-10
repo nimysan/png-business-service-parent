@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ImageValidateCodeGenerator {
 
-	public static final String RANDOMCODEKEY = "RANDOMVALIDATECODEKEY";// 放到session中的key
+	public static final String RANDOMCODEKEY = "PNG-GETS-ROBOT-IMAGE-CHECK-CODE";// 放到session中的key
 	private String randString = "0123456789";// 随机产生只有数字的字符串 private String
 	// private String randString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";//随机产生只有字母的字符串
 	// private String randString =

@@ -1,16 +1,8 @@
 package com.vluee.png.shrfacade.domain.model;
 
-/**
- * 
- * 
- * 
- * @author SeanYe
- *
- */
 public interface VcodeRequestRepository {
 
-	void store(VcodeRequest request);
+	public VcodeRequest get(String id);
 
-	VcodeRequest get(String sessionIdentifier);
-
+	public void store(String sessionId, VcodeRequest request);
 }

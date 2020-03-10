@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.base.Joiner;
 import com.vluee.png.shrfacade.application.services.HrServiceStub;
-import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
-import com.vluee.png.shrfacade.domain.model.SalaryCatalog;
-import com.vluee.png.shrfacade.domain.model.SalaryItem;
+import com.vluee.png.shrfacade.domain.model.hr.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.domain.model.hr.SalaryCatalog;
+import com.vluee.png.shrfacade.domain.model.hr.SalaryItem;
 
 class EmployeeMonthSalaryAssemblerTest {
 

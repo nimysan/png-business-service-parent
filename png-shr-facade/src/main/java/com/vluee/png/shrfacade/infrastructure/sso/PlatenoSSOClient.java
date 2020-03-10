@@ -1,8 +1,8 @@
 package com.vluee.png.shrfacade.infrastructure.sso;
 
-import static com.vluee.png.shrfacade.PngConstants.EC_TOEKN_EXPIRED;
-import static com.vluee.png.shrfacade.PngConstants.HEADER_PLATENO_SSO_AUTHENTICATE;
-import static com.vluee.png.shrfacade.PngConstants.RETURN_CODE_OK;
+import static com.vluee.png.shrfacade.PngConstants.SSO_EC_TOEKN_EXPIRED;
+import static com.vluee.png.shrfacade.PngConstants.SSO_HEADER_PLATENO_SSO_AUTHENTICATE;
+import static com.vluee.png.shrfacade.PngConstants.SSO_RETURN_CODE_OK;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class PlatenoSSOClient {
 		ResponseEntity<String> exchange = sendTokenRequset("/cxf/userManage/loginIn", params);
 		log.debug("fetch token resonse {}", exchange);
 		PlatenoSSOResponse ssoResponse = JSONObject.parseObject(exchange.getBody(), PlatenoSSOResponse.class);
-		if (ssoResponse.getStatusCode().contentEquals(RETURN_CODE_OK)) {
+		if (ssoResponse.getStatusCode().contentEquals(SSO_RETURN_CODE_OK)) {
 			token = ssoResponse.getData();
 		}
 	}
@@ -136,7 +136,7 @@ public class PlatenoSSOClient {
 	public ResponseEntity<String> sendApiRequestForString(String url, MultiValueMap<String, String> params,
 			HttpMethod method) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_PLATENO_SSO_AUTHENTICATE, token);
+		headers.add(SSO_HEADER_PLATENO_SSO_AUTHENTICATE, token);
 		if (method.equals(HttpMethod.GET)) {
 			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 			HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
@@ -156,6 +156,6 @@ public class PlatenoSSOClient {
 	}
 
 	private boolean serverReportTokenExpired(PlatenoSSOResponse ssoResponse) {
-		return ssoResponse.getStatusCode().contentEquals(EC_TOEKN_EXPIRED);
+		return ssoResponse.getStatusCode().contentEquals(SSO_EC_TOEKN_EXPIRED);
 	}
 }

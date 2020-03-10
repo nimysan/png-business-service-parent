@@ -3,9 +3,9 @@ package com.vluee.png.shrfacade.domain.model.assembler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
-import com.vluee.png.shrfacade.domain.model.SalaryCatalog;
-import com.vluee.png.shrfacade.domain.model.SalaryItem;
+import com.vluee.png.shrfacade.domain.model.hr.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.domain.model.hr.SalaryCatalog;
+import com.vluee.png.shrfacade.domain.model.hr.SalaryItem;
 
 public class EmployeeMonthSalaryAssembler {
 

@@ -1,5 +1,7 @@
 package com.vluee.png.shrfacade.domain.service;
 
+import static com.vluee.png.shrfacade.PngConstants.VCODE_LIVE_TIME;
+import static com.vluee.png.shrfacade.PngConstants.VCODE_REQUEST_LIVE_TIME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
@@ -26,9 +28,6 @@ class AbstractVcodeServiceTest {
 
 	@Mock
 	private VcodeRequestRepository vcodeRepository;
-	
-	
-
 
 	@InjectMocks
 	private AbstractVcodeService vcodeService = new AbstractVcodeService() {
@@ -60,7 +59,7 @@ class AbstractVcodeServiceTest {
 		String sessionIdentifier = "test";
 		String mobile = "13512341234";
 		VcodeRequest before10secondsRequest = new VcodeRequest(sessionIdentifier,
-				new Date().getTime() - VcodeService.VCODE_REQUEST_DURATION + 1000, "1234", mobile);
+				new Date().getTime() - VCODE_REQUEST_LIVE_TIME + 1000, "1234", mobile);
 		when(vcodeRepository.get(sessionIdentifier)).thenReturn(before10secondsRequest);
 //		verify(vcodeRepository).getLatestRequest(sessionIdentidfier);
 		assertThrows(PngBusinessException.class, () -> {
@@ -74,7 +73,7 @@ class AbstractVcodeServiceTest {
 		String sessionIdentifier = "test";
 		String mobile = "13512341234";
 		VcodeRequest before10secondsRequest = new VcodeRequest(sessionIdentifier,
-				new Date().getTime() - VcodeService.VCODE_REQUEST_DURATION - 1000, "1234", mobile);
+				new Date().getTime() - VCODE_REQUEST_LIVE_TIME - 1000, "1234", mobile);
 		when(vcodeRepository.get(sessionIdentifier)).thenReturn(before10secondsRequest);
 		vcodeService.sendCode(sessionIdentifier, mobile);
 	}
@@ -127,7 +126,7 @@ class AbstractVcodeServiceTest {
 		String mobile = "13512341234";
 		String vcode = "123456";
 		VcodeRequest vcodeHistory = new VcodeRequest(sessionIdentifier,
-				new Date().getTime() - VcodeService.VCODE_EXPIRED_DURATION - 2000, vcode, mobile);
+				new Date().getTime() - VCODE_LIVE_TIME - 2000, vcode, mobile);
 		when(vcodeRepository.get(sessionIdentifier)).thenReturn(vcodeHistory);
 		assertThrows(PngBusinessException.class, () -> {
 			vcodeService.validateVcode(sessionIdentifier, mobile, vcode);

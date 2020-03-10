@@ -1,4 +1,4 @@
-package com.vluee.png.shrfacade.domain.model;
+package com.vluee.png.shrfacade.domain.model.hr;
 
 import java.util.ArrayList;
 import java.util.Collections;

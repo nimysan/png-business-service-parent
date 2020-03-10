@@ -1,6 +1,6 @@
 package com.vluee.png.shrfacade.domain.service.impl;
 
-import static com.vluee.png.shrfacade.PngConstants.API_GET_USER_BY_MOBILE;
+import static com.vluee.png.shrfacade.PngConstants.SSO_API_GET_USER_BY_MOBILE;
 import static com.vluee.png.shrfacade.application.exception.PngBusinessException.EC_HR_CALL_ERROR;
 import static com.vluee.png.shrfacade.application.exception.PngBusinessException.EC_HR_NO_USER;
 
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,55 +18,39 @@ import com.alibaba.fastjson.JSONObject;
 import com.vluee.png.shrfacade.PngConstants;
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
 import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
-import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
-import com.vluee.png.shrfacade.domain.model.HrUser;
-import com.vluee.png.shrfacade.domain.model.assembler.EmployeeMonthSalaryAssembler;
-import com.vluee.png.shrfacade.domain.service.HrService;
-import com.vluee.png.shrfacade.infrastructure.shr.PngShrClient;
+import com.vluee.png.shrfacade.domain.model.hr.HrUser;
+import com.vluee.png.shrfacade.domain.model.hr.HrUserRepository;
+import com.vluee.png.shrfacade.domain.service.PlateSSOService;
 import com.vluee.png.shrfacade.infrastructure.sso.PlatenoSSOClient;
 import com.vluee.png.shrfacade.infrastructure.sso.PlatenoSSOResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * 金蝶SHR服务提供了基础数据接口给到SSO，但是工资类的SSO尚未对接。 所以此处我们会从SSO拿用户信息，同时直连SHR获取工资数据信息。
- * 
- * @author SeanYe
- *
- */
 @Service
-@Profile("!integration-test")
 @Slf4j
-public class HrServiceKingdeeShrImpl implements HrService {
-
+public class PlateSSOServiceImpl implements PlateSSOService {
 	@Autowired
 	private PngExceptionHandler exceptionHandler;
 
 	@Autowired
-	private PlatenoSSOClient ssoClient;
+	private HrUserRepository hrUserRepository;
 
 	@Autowired
-	private PngShrClient pngShrClient;
-
-	@Override
-	public EmployeeMonthSalary fetchSalary(String userId) {
-		try {
-			String ehrData = pngShrClient.getEhrData(userId, PngConstants.SHR_API_GET_SALARY, 1, 10);
-			EmployeeMonthSalaryAssembler.assembleFromShrResponse(ehrData);
-		} catch (Exception e) {
-			log.error("Call shr failed ", e);
-		}
-		return null;
-	}
+	private PlatenoSSOClient ssoClient;
 
 	@Override
 	public HrUser getUserByMobile(String mobile, String employeeName) {
+
+		HrUser ifPresent = hrUserRepository.getByMobile(mobile);
+		if (ifPresent != null) {
+			return ifPresent;
+		}
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("mobile", mobile);
-		PlatenoSSOResponse ssoResponse = ssoClient.sendApiRequest(API_GET_USER_BY_MOBILE, params, HttpMethod.GET);
+		PlatenoSSOResponse ssoResponse = ssoClient.sendApiRequest(SSO_API_GET_USER_BY_MOBILE, params, HttpMethod.GET);
 		log.debug("SSO fail for mobile {} with response {}", mobile, ssoResponse);
-		if (!PngConstants.RETURN_CODE_OK.contentEquals(ssoResponse.getStatusCode())) {
-			if (PngConstants.NO_USER_CODE.contentEquals(ssoResponse.getStatusCode())) {
+		if (!PngConstants.SSO_RETURN_CODE_OK.contentEquals(ssoResponse.getStatusCode())) {
+			if (PngConstants.SSO_NO_USER_CODE.contentEquals(ssoResponse.getStatusCode())) {
 				exceptionHandler.throwExceptionWithCode(EC_HR_CALL_ERROR);
 			} else {
 				exceptionHandler.throwExceptionWithCode(EC_HR_NO_USER);
@@ -88,11 +71,14 @@ public class HrServiceKingdeeShrImpl implements HrService {
 				}
 			}
 			if (hrUsers.size() == 1) {
-				return hrUsers.get(0);
+				HrUser hrUser = hrUsers.get(0);
+				hrUserRepository.store(mobile, hrUser);
+				return hrUser;
 			} else {
 				exceptionHandler.throwExceptionWithCode(PngBusinessException.EC_HR_MULTI_USERS_WITH_SAME_PHONE);
 			}
 		}
 		return null;
+
 	}
 }

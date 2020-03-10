@@ -1,4 +1,4 @@
-package com.vluee.png.shrfacade.domain.model;
+package com.vluee.png.shrfacade.domain.model.hr;
 
 import lombok.Getter;
 import lombok.Setter;

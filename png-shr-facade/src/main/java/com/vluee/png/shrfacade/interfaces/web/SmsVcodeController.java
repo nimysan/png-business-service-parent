@@ -10,13 +10,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vluee.png.shrfacade.application.exception.PngExceptionHandler;
-import com.vluee.png.shrfacade.application.services.SalaryQueryService;
+import com.vluee.png.shrfacade.application.service.HrService;
+import com.vluee.png.shrfacade.domain.model.hr.HrUser;
+import com.vluee.png.shrfacade.domain.service.VcodeService;
 
 @RestController
-public class VcodeController {
+public class SmsVcodeController {
 
 	@Autowired
-	private SalaryQueryService salaryQueryService;
+	private VcodeService vcodeService;
+
+	@Autowired
+	private HrService hrService;
 
 	@Autowired
 	private PngExceptionHandler exceptionHandler;
@@ -25,13 +30,17 @@ public class VcodeController {
 	public ResponseEntity<BisResp> sendVcode(HttpSession session, @RequestParam String mobile,
 			@RequestParam String userName, @RequestParam String robotCheckCode) {
 		try {
+			HrUser hrUser = hrService.getUserByMobile(mobile, userName);
+			if(hrUser == null) {
+				throw new Exception("找不到该手机号关联的铂涛员工数据或姓名与HR系统不匹配");
+			}
 			String attribute = (String) session.getAttribute(ImageValidateCodeGenerator.RANDOMCODEKEY);
 			if (StringUtils.isNotBlank(attribute) && robotCheckCode.contentEquals(attribute)) {
 				String sessionId = session.getId();
-				salaryQueryService.sendVcodeToUser(sessionId, mobile, userName);
+				vcodeService.sendCode(sessionId, mobile);
 				return ResponseEntity.ok(BisResp.okEntity("验证码发送成功"));
 			} else {
-				throw new Exception("请重新检查您的图形验证码");
+				throw new Exception("图形验证码错误，请重新输入");
 			}
 		} catch (Exception e) {
 			return ResponseEntity.ok(BisResp.fromException(exceptionHandler.output(e)));

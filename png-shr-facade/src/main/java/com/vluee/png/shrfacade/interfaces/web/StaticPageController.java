@@ -1,7 +1,5 @@
 package com.vluee.png.shrfacade.interfaces.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.common.collect.ImmutableMap;
 import com.vluee.png.shrfacade.application.exception.PngBusinessException;
-import com.vluee.png.shrfacade.application.services.SalaryQueryService;
-import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.application.service.HrService;
+import com.vluee.png.shrfacade.domain.model.hr.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.domain.model.hr.HrUser;
+import com.vluee.png.shrfacade.domain.service.VcodeService;
 import com.vluee.png.shrfacade.interfaces.web.assembler.SalaryVoAssembler;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 public class StaticPageController {
 
 	@Autowired
-	private SalaryQueryService salaryQueryService;
+	private HrService hrService;
+
+	@Autowired
+	private VcodeService vcodeService;
 
 	@Autowired
 	private SalaryVoAssembler assembler;
@@ -33,12 +36,12 @@ public class StaticPageController {
 			@RequestParam(name = "userName", required = true) String userName,
 			@RequestParam(name = "vcode", required = true) String vcode, Model model) {
 		try {
-			EmployeeMonthSalary salary = salaryQueryService.getSalary(session.getId(), mobile, userName, vcode);
-			if (salary != null) {
-				model.addAttribute("salary", assembler.assemble(salary));
-			}
+			authenticatedRequest(session, mobile, vcode);
+			HrUser userByMobile = hrService.getUserByMobile(mobile, userName);
+			EmployeeMonthSalary salary = hrService.fetchSalary(userByMobile.getUserId());
+			model.addAttribute("salary", assembler.assemble(salary));
 		} catch (PngBusinessException e) {
-			model.addAllAttributes(ImmutableMap.of("errorcode", e.getErrorCode(), "message", e.getMessage()));// TODO
+			model.addAllAttributes(ImmutableMap.of("errorcode", e.getErrorCode(), "message", e.getMessage()));
 			log.error(String.format("Failed to get salary for mobile %s and vcode %s", mobile, vcode), e);
 			return "getcode";
 		} catch (Exception e) {
@@ -49,19 +52,8 @@ public class StaticPageController {
 		return "salary";
 	}
 
-	@GetMapping("/robotCheckImage")
-	public void getRobotVerifyCode(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			response.setContentType("image/jpeg");// 设置相应类型,告诉浏览器输出的内容为图片
-			response.setHeader("Pragma", "No-cache");// 设置响应头信息，告诉浏览器不要缓存此内容
-			response.setHeader("Cache-Control", "no-cache");
-			response.setDateHeader("Expire", 0);
-			ImageValidateCodeGenerator randomValidateCode = new ImageValidateCodeGenerator();
-			randomValidateCode.generateImage(request, response);// 输出验证码图片方法
-		} catch (Exception e) {
-			log.error("获取图片验证码失败", e);
-			e.printStackTrace();
-		}
+	private void authenticatedRequest(HttpSession session, String mobile, String vcode) {
+		vcodeService.validateVcode(session.getId(), mobile, vcode);
 	}
 
 	@GetMapping("/getcode")

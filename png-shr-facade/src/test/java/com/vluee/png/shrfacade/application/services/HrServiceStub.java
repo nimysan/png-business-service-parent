@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
-import com.vluee.png.shrfacade.domain.model.EmployeeMonthSalary;
-import com.vluee.png.shrfacade.domain.model.HrUser;
+import com.vluee.png.shrfacade.application.service.HrService;
 import com.vluee.png.shrfacade.domain.model.assembler.EmployeeMonthSalaryAssembler;
-import com.vluee.png.shrfacade.domain.service.HrService;
+import com.vluee.png.shrfacade.domain.model.hr.EmployeeMonthSalary;
+import com.vluee.png.shrfacade.domain.model.hr.HrUser;
 
 import lombok.extern.slf4j.Slf4j;
 
