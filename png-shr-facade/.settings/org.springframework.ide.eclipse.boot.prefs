@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-spring.boot.launch.profile.history=not-in-office;dev;
+spring.boot.launch.profile.history=dev;not-in-office;

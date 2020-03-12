@@ -1,6 +1,12 @@
 (function($) {
+	/*
+	jconfirm.defaults = {
+		theme: 'light',
+		title: '铂涛集团',
+	}*/
 
 	function _png_alert(msg) {
+		$.dialog(msg);
 	}
 
 	function isPoneAvailable(mobile) {
@@ -26,18 +32,18 @@
 	function getSalary() {
 		var mobile = $("#mobileInput").val();
 		if (!isPoneAvailable(mobile)) {
-			alert("手机号码格式有误，请重新输入");
-			return;
+			_png_alert("手机号码格式有误，请重新输入");
+			return false;
 		}
 		var name = $("#nameInput").val();
 		if (!name) {
-			alert("请输入姓名");
-			return;
+			_png_alert("请输入姓名");
+			return false;
 		}
 		var vcode = $("#vcodeInput").val();
 		if (!vcode) {
-			alert("请输入您收到的6位数的短信验证码");
-			return;
+			_png_alert("请输入您收到的6位数的短信验证码");
+			return false;
 		}
 		var salaryDetailUrl = "/salary?mobile=" + mobile + "&vcode=" + vcode + "&userName=" + name;
 		window.location.href = salaryDetailUrl;
@@ -46,7 +52,6 @@
 
 	function refreshCodeImageAndShow() {
 		$("#robotCheckImage").attr("src", "/robotCheckImage?" + Math.random());
-		console.log("--- hello here---");
 		return false;
 	}
 
@@ -54,17 +59,17 @@
 	function getSmsCode() {
 		var mobile = $("#mobileInput").val();
 		if (!isPoneAvailable(mobile)) {
-			alert("手机号码格式有误，请重新输入");
+			_png_alert("手机号码格式有误，请重新输入");
 			return false;
 		}
 		var name = $("#nameInput").val();
 		if (!name) {
-			alert("请输入姓名");
+			_png_alert("请输入姓名");
 			return;
 		}
 		var robotCheckCode = $("#robotCheckCodeInput").val();
 		if (!robotCheckCode) {
-			alert("请输入图形验证码中的数字");
+			_png_alert("请输入图形验证码中的数字");
 			return false;
 		}
 
@@ -73,11 +78,10 @@
 		$.get("/vcode?mobile=" + $("#mobileInput").val() + "&robotCheckCode=" + robotCheckCode + "&userName=" + name, function(data) {
 			if (data.code == 'PNG-00000') {
 				setButtonClock();
-				alert("发送验证码成功");
+				_png_alert("发送验证码成功");
 			} else {
 				cleanButtonClock();
-				alert(data.message);
-
+				_png_alert(data.message);
 			}
 		});
 	}

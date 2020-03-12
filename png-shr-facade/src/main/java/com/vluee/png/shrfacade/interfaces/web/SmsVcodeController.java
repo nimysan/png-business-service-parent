@@ -38,7 +38,7 @@ public class SmsVcodeController {
 				throw new Exception("找不到该手机号关联的铂涛员工数据或姓名与HR系统不匹配");
 			}
 			String attribute = (String) session.getAttribute(ImageValidateCodeGenerator.RANDOMCODEKEY);
-			if (StringUtils.isNotBlank(attribute) && robotCheckCode.contentEquals(attribute)) {
+			if (StringUtils.isNotBlank(attribute) && robotCheckCode.equalsIgnoreCase(attribute)) {
 				String sessionId = session.getId();
 				vcodeService.sendCode(sessionId, mobile);
 				return ResponseEntity.ok(BisResp.okEntity("验证码发送成功"));

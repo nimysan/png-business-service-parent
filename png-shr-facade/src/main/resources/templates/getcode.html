@@ -7,8 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+    <script src="/js/jquery-confirm.min.js"></script>
     <script src="/js/png.js"></script>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/jquery-confirm.min.css">
     </style>
     <link rel="stylesheet" href="/css/png.css" type="text/css">
     </style>
@@ -56,7 +58,7 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label for="robotCheckCodeInput">请输入图形中的数字</label>
+                            <label for="robotCheckCodeInput">请输入图形中的数字(不区分大小写)</label>
                             <input id="robotCheckCodeInput" type="text" class="form-control"></input><img id="robotCheckImage" src="/robotCheckImage"><a id="refreshImageCode" href="javascript:void(0);">看不清，刷新</a>
                         </div>
                     </form>

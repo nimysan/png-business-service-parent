@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@Profile({ "integration-test", "not-in-office", "!prod" })
+@Profile({ "integration-test", "not-in-office" })
 public class PlateSSOServiceStub implements PlateSSOService {
 
 	private Map<String, HrUser> userMap = new HashMap<String, HrUser>();
